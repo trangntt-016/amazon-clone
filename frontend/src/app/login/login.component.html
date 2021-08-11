@@ -1,0 +1,39 @@
+<div class='login'>
+  <a [routerLink]="['/']">
+    <img
+      class="login__logo"
+      src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png'
+    />
+  </a>
+
+
+  <div class='login__container'>
+    <h1>Sign-in</h1>
+
+    <form  #f="ngForm" >
+      <h5>E-mail</h5>
+
+        <input matInput
+               [(ngModel)]="loginUser.email"
+               name="email"
+        >
+
+      <h5>Password</h5>
+      <input matInput
+             type="password"
+             [(ngModel)]="loginUser.password"
+             name="password"
+      >
+
+      <div class="login__rememberMe">
+        <mat-checkbox (change)='onChange($event.checked)'><p>Keep me signed in</p></mat-checkbox>
+      </div>
+      <button type='submit' class='login__signInButton'>Sign In</button>
+    </form>
+
+    <p>
+      By signing-in you agree to the Amazon Clone's Conditions of Use & Privacy Notice.
+    </p>
+
+  </div>
+</div>
