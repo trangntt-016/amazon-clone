@@ -1,2 +1,7 @@
-package com.canada.aws.api.exception;public class BadRequestException {
+package com.canada.aws.api.exception;
+
+public class BadRequestException extends RuntimeException{
+    public BadRequestException(String message){
+        super(message);
+    }
 }

@@ -1,15 +1,22 @@
 package com.canada.aws.service.impl;
 
 
+import com.canada.aws.api.exception.BadCredentialsException;
+import com.canada.aws.api.exception.BadRequestException;
 import com.canada.aws.api.exception.DuplicateEmailException;
+import com.canada.aws.dto.LogInResDto;
+import com.canada.aws.dto.LoginReqDto;
 import com.canada.aws.dto.RegisterOTPResDto;
 import com.canada.aws.dto.RegisterReqDto;
 import com.canada.aws.model.Role;
 import com.canada.aws.model.UserEntity;
 import com.canada.aws.repo.RoleRepository;
 import com.canada.aws.repo.UserEntityRepository;
+import com.canada.aws.security.jwt.TokenProvider;
 import com.canada.aws.service.UserEntityService;
 import com.canada.aws.utils.MapperUtils;
+import org.apache.catalina.User;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -29,10 +36,13 @@ public class UserEntityServiceImpl implements UserEntityService {
     private UserEntityRepository userEntityRepository;
 
     @Autowired
+    RoleRepository roleRepository;
+
+    @Autowired
     private JavaMailSender mailSender;
 
     @Autowired
-    RoleRepository roleRepository;
+    private TokenProvider tokenProvider;
 
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -49,7 +59,6 @@ public class UserEntityServiceImpl implements UserEntityService {
         Role role = roleRepository.findByRoleName(account.getRole()).get();
 
         UserEntity newUser = UserEntity.builder()
-                .userId(account.getName())
                 .role(role)
                 .name(account.getName())
                 .password(encodedPassword)
@@ -59,12 +68,70 @@ public class UserEntityServiceImpl implements UserEntityService {
                 .email(account.getEmail())
                 .build();
 
-        userEntityRepository.save(newUser);
+        UserEntity savedUser = userEntityRepository.save(newUser);
 
-        sendVerificationEmail(newUser, encodedOTP);
+        sendVerificationEmail(savedUser, encodedOTP);
 
-        RegisterOTPResDto dto = MapperUtils.mapperObject(newUser, RegisterOTPResDto.class);
+        RegisterOTPResDto dto = MapperUtils.mapperObject(savedUser, RegisterOTPResDto.class);
         return dto;
+    }
+
+    @Override
+    public Boolean isOTPValid(String userId, String OTP) {
+        Optional<UserEntity>user = userEntityRepository.findById(userId);
+
+        if(user.isEmpty()) throw new BadRequestException("Unable to find user with id " + userId);
+
+        if(user.get().getOtpCode()==null || !user.get().getOtpCode().equals(OTP)) throw new BadCredentialsException("OTP does not exist");
+
+        long currentTimeInMillis = System.currentTimeMillis();
+
+        long otpRequestedTimeInMillis = user.get().getOtpRequestedTime().getTime();
+
+        if (otpRequestedTimeInMillis + UserEntity.OTP_VALID_DURATION < currentTimeInMillis) {
+            // OTP expires
+            throw new BadCredentialsException("OTP has expired");
+        }
+        user.get().setVerified(true);
+
+        user.get().setOtpCode(null);
+
+        user.get().setOtpRequestedTime(null);
+
+        userEntityRepository.save(user.get());
+
+        return true;
+    }
+
+    @Override
+    public LogInResDto OTPLogin(String userId) {
+        Optional<UserEntity> userFound = userEntityRepository.findById(userId);
+
+        if(userFound.isPresent()){
+            LoginReqDto loginReq = MapperUtils.mapperObject(userFound.get(), LoginReqDto.class);
+
+            loginReq.setIsRememberMe(true);
+
+            return login(loginReq);
+        }
+        return null;
+    }
+
+    @Override
+    public LogInResDto login(LoginReqDto loginDto) {
+        Optional<UserEntity> userFound = userEntityRepository.findByEmail(loginDto.getEmail());
+
+        if(userFound.isEmpty()) {
+            throw new BadRequestException("Unable to find user with email " + loginDto.getEmail());
+        }
+
+        String jwt = tokenProvider.createToken(userFound.get(),loginDto.getIsRememberMe());
+
+        String name = userFound.get().getName();
+
+        LogInResDto userLoginDto = LogInResDto.builder().jwt(jwt).name(name).build();
+
+        return userLoginDto;
     }
 
     public boolean isEmailUnique(String email){
@@ -77,7 +144,6 @@ public class UserEntityServiceImpl implements UserEntityService {
 
     public void sendVerificationEmail(UserEntity user, String OTP) throws MessagingException {
         String subject = "Verify your new Amazon account";
-        String senderName = "Amazon";
         String content = "<div style=\"width: 500px;\">\n" +
                 "  <div style=\"display:flex; flex-direction: row; justify-content: space-between;margin-bottom:10px\">\n" +
                 "    <img style = \"object-fit: contain;width: 100px;margin-right:150px\"src = \"https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png\">\n" +
@@ -104,11 +170,13 @@ public class UserEntityServiceImpl implements UserEntityService {
 
     public String generateRandomOTP(){
         StringBuilder sb = new StringBuilder();
+
         for(int i = 0; i < 5; i++) {
             int randomNum = (int) (Math.random()*(9-0)+0);
             String key = String.valueOf(randomNum);
             sb.append(key);
         }
+
         return sb.toString();
     }
 }

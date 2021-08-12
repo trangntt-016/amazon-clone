@@ -19,7 +19,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserEntity {
-    private static final long OTP_VALID_DURATION = 5 * 60 * 1000;   // 5 minutes
+    public static final long OTP_VALID_DURATION = 5 * 60 * 1000;   // 5 minutes
 
     @Id
     @Column(name = "user_id",updatable = false,nullable = false)
@@ -61,19 +61,5 @@ public class UserEntity {
     )
     private Role role;
 
-    public boolean isOTPRequired() {
-        if (this.getOtpCode() == null) {
-            return false;
-        }
 
-        long currentTimeInMillis = System.currentTimeMillis();
-        long otpRequestedTimeInMillis = this.otpRequestedTime.getTime();
-
-        if (otpRequestedTimeInMillis + OTP_VALID_DURATION < currentTimeInMillis) {
-            // OTP expires
-            return false;
-        }
-
-        return true;
-    }
 }

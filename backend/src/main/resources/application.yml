@@ -33,3 +33,5 @@ spring:
           auth: true
           starttls:
             enable: true
+
+secretKey: fPJZz!YkEmUhdmvvhw7y*6K*0$7vco!pfiOtq6N&cgnLNT$I4u
