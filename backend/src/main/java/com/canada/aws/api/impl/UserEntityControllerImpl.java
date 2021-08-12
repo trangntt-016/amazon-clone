@@ -43,7 +43,7 @@ public class UserEntityControllerImpl implements UserEntityController {
             HttpHeaders httpHeaders = new HttpHeaders();
 
             httpHeaders.add("Authorization", "Bearer " + userLogin.getJwt());
-            
+
             return new ResponseEntity<>(
                     userLogin,
                     httpHeaders, HttpStatus.OK);
@@ -58,6 +58,22 @@ public class UserEntityControllerImpl implements UserEntityController {
 
     @Override
     public ResponseEntity<?> login(LoginReqDto userLogin) {
-        return null;
+        try {
+            LogInResDto loggedInUser = userService.login(userLogin);
+
+            HttpHeaders httpHeaders = new HttpHeaders();
+
+            httpHeaders.add("Authorization", "Bearer " + loggedInUser.getJwt());
+
+            return new ResponseEntity<>(
+                    userLogin,
+                    httpHeaders, HttpStatus.OK);
+        }
+        catch(BadRequestException ex){
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
+        }
+        catch(BadCredentialsException ex) {
+            return new ResponseEntity<>(ex.getMessage(),HttpStatus.UNAUTHORIZED);
+        }
     }
 }

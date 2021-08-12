@@ -129,7 +129,7 @@ public class UserEntityServiceImpl implements UserEntityService {
 
         String name = userFound.get().getName();
 
-        LogInResDto userLoginDto = LogInResDto.builder().jwt(jwt).name(name).build();
+        LogInResDto userLoginDto = LogInResDto.builder().jwt(jwt).name(name).isRememberMe(loginDto.getIsRememberMe()).build();
 
         return userLoginDto;
     }

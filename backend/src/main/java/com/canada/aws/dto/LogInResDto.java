@@ -11,5 +11,6 @@ import lombok.NoArgsConstructor;
 @Builder
 public class LogInResDto {
     String name;
+    Boolean isRememberMe;
     String jwt;
 }

@@ -6,7 +6,6 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,7 @@ public class TokenProvider {
     public static final int JWT_EXPIRATION_REMEMBER = 1209600000; //14 days
     public static final int JWT_EXPIRATION_WITHOUT_REMEMBER = 300000; //5 mins
     private static final String AUTHORITIES_KEY = "role";
-    private static final String USERNAME = "username";
+    private static final String USERNAME = "name";
     private static final String USER_ID = "userId";
 
     public Date extractExpiration(String token) {
