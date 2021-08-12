@@ -1,2 +1,7 @@
-package com.canada.aws.api.exception;public class DuplicateEmailException {
+package com.canada.aws.api.exception;
+
+public class DuplicateEmailException extends RuntimeException{
+    public DuplicateEmailException(String message){
+        super(message);
+    }
 }

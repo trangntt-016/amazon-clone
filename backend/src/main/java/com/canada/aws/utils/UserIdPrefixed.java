@@ -1,4 +1,4 @@
-package com.canada.aws.model.utils;
+package com.canada.aws.utils;
 
 import com.canada.aws.model.UserEntity;
 import org.hibernate.HibernateException;

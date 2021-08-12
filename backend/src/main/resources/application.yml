@@ -21,3 +21,15 @@ spring:
   jackson:
     serialization:
       fail-on-empty-beans: false
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: amazon.team016@gmail.com
+    password: '*Abc123456'
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true

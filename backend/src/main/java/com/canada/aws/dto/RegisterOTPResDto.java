@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterResDto {
+public class RegisterOTPResDto {
     String name;
+    String email;
 }

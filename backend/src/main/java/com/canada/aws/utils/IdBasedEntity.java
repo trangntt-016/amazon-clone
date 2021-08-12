@@ -1,4 +1,4 @@
-package com.canada.aws.model.utils;
+package com.canada.aws.utils;
 
 import lombok.Data;
 
