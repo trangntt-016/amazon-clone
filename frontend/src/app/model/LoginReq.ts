@@ -1,4 +1,4 @@
-export class UserAuthReq {
+export class LoginReq {
   email: string;
   password: string;
   isRememberMe: boolean;

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserAuthReq } from '../model/UserAuthReq';
+import { LoginReq } from '../model/LoginReq';
 
 @Component({
   selector: 'app-login',
@@ -7,12 +7,12 @@ import { UserAuthReq } from '../model/UserAuthReq';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  loginUser: UserAuthReq;
+  loginUser: LoginReq;
 
   constructor() { }
 
   ngOnInit(): void {
-    this.loginUser = new UserAuthReq();
+    this.loginUser = new LoginReq();
   }
   onChange(event){
     this.loginUser.isRememberMe = event;

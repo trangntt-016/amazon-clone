@@ -1,4 +1,4 @@
-.login {
+.register {
   background-color: white;
   height: 100vh;
   display: flex;
@@ -6,13 +6,13 @@
   align-items: center;
 }
 
-.login__logo {
+.register__logo {
   object-fit: contain;
   width: 100px;
   margin: 20px auto;
 }
 
-.login__container {
+.register__container {
   width: 300px;
   height: fit-content;
   display: flex;
@@ -22,12 +22,12 @@
   padding: 20px;
 }
 
-.login__container > h1 {
+.register__container > h1 {
   font-weight: 400;
   margin-bottom: 20px;
 }
 
-.login__container > form > h5 {
+.register__container > form > h5 {
   margin-bottom: 5px;
 }
 
@@ -47,7 +47,7 @@ p {
   margin-top: 15px;
   font-size: 12px;
 }
-.login__rememberMe{
+.register__rememberMe{
   display: flex;
 }
 .check-box {
@@ -65,7 +65,7 @@ p {
   cursor: pointer;
 }
 
-.login__rememberMe p{
+.register__rememberMe p{
   margin-top:0px;
 }
 
@@ -74,21 +74,44 @@ p {
   height:100%;
 }
 
-.login__signInButton {
+.register__signInButton {
   background: #f0c14b;
   border-radius: 2px;
   width: 100%;
   height: 30px;
   border: 1px solid;
-  margin-top: 20px;
+  margin: 10px 0px 20px 0px;
   border-color: #a88734 #9c7e31 #846a29;
 }
 
-.login__registerButton {
+.register__registerButton {
   border-radius: 2px;
   width: 100%;
   height: 30px;
   border: 1px solid;
   margin-top: 10px;
+}
+
+.signup__role{
+  display:flex;
+}
+
+.signup__role >.checkbox{
+  width:12px;
+  margin-right: 5px;
+}
+.signup__role >.checkbox:focus{
+  outline-color: transparent;
+  box-shadow: none;
+}
+
+.signup__role >p{
+  margin-top: 5px;
+  margin-right: 40px;
+}
+
+.h5_verified{
+  font-weight:400;
+  margin-bottom: 10px;
 }
 

@@ -1,0 +1,63 @@
+<div class='register'>
+  <a [routerLink]="['/']">
+    <img
+      class="register__logo"
+      src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png'
+    />
+  </a>
+
+  <div class='register__container'*ngIf="!OTPVerified">
+    <h1>Create account</h1>
+
+    <form  #f="ngForm">
+      <h5>Your name</h5>
+
+      <input matInput
+             [(ngModel)]="signUpUser.name"
+             name="name"
+      >
+      <h5>E-mail</h5>
+
+      <input matInput
+             [(ngModel)]="signUpUser.email"
+             name="email"
+      >
+
+      <h5>Password</h5>
+      <input matInput
+             type="password"
+             [(ngModel)]="signUpUser.password"
+             name="password"
+      >
+
+      <div class="signup__role">
+        <input class="checkbox" type="checkbox" name="role" [checked]="currentlyChecked === check_box_type.CUSTOMER"
+               (click)="selectCheckBox(check_box_type.CUSTOMER)"
+        >
+        <p>Customer</p>
+        <input class="checkbox" type="checkbox" name="role" [checked]="currentlyChecked === check_box_type.SELLER"
+               (click)="selectCheckBox(check_box_type.SELLER)"
+        >
+        <p>Seller</p>
+      </div>
+
+      <button (click)="onSubmit(f)"  class='register__signInButton'>Create Your Amazon Account</button>
+    </form>
+  </div>
+
+  <div class='register__container'*ngIf="OTPVerified">
+    <h1>Verify email address</h1>
+    <h5 class="h5_verified">To verify your email, we've sent a One Time Password (OTP) to {{verifiedEmail}}</h5>
+    <form  #verifiedF="ngForm" (submit)="onSubmitOTP(verifiedF)">
+      <h5>Enter OTP</h5>
+
+      <input matInput
+             [(ngModel)]="OTPCode"
+             name="OTPCode"
+      >
+      <button type='submit' class='register__signInButton'>Create Your Amazon Account</button>
+      <h5 class="h5_verified">By creating an account, you agree to Amazon's Conditions of Use and Privacy Notice.</h5>
+    </form>
+  </div>
+
+</div>
