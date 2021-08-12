@@ -28,7 +28,7 @@
       <div class="login__rememberMe">
         <mat-checkbox (change)='onChange($event.checked)'><p>Keep me signed in</p></mat-checkbox>
       </div>
-      <button type='submit' class='login__signInButton'>Sign In</button>
+      <button type='submit' class='login__signInButton' (click)="onSubmit(f)">Sign In</button>
     </form>
 
     <p>

@@ -3,6 +3,7 @@ import { RegisterReq } from '../model/RegisterReq';
 import { AuthService } from '../service/auth.service';
 import { NgForm } from '@angular/forms';
 import { VerifyOTPReq } from '../model/VerifyOTPReq';
+import { Router } from '@angular/router';
 
 enum Role { CUSTOMER, SELLER};
 
@@ -43,7 +44,8 @@ export class RegisterComponent implements OnInit {
   }
 
   constructor(
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -73,7 +75,22 @@ export class RegisterComponent implements OnInit {
       this.verifyOTPUser.otpCode = this.OTPCode.toString();
       this.authService.verifyOTP(this.verifyOTPUser).subscribe(
         (success) => {
-          console.log(success.headers.get("Authorization"));
+          const jwt = success.headers.get('Authorization').substring('Bearer '.length);
+
+          if (success.body.isRememberMe){
+            localStorage.setItem('access_token', jwt);
+          }
+          else{
+            sessionStorage.setItem('access_token', jwt);
+          }
+
+          if(this.authService.readToken().role == "CUSTOMER"){
+            this.router.navigate(['/']);
+          }
+          else{
+            this.router.navigate(['seller']);
+          }
+
         }
       )
     }
