@@ -9,5 +9,4 @@ export class RegisterReq {
     this.password = '';
     this.role = '';
   }
-
 }

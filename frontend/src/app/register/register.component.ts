@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { RegisterReq } from '../model/RegisterReq';
 import { AuthService } from '../service/auth.service';
 import { NgForm } from '@angular/forms';
+import { VerifyOTPReq } from '../model/VerifyOTPReq';
 
 enum Role { CUSTOMER, SELLER};
 
@@ -13,9 +14,11 @@ enum Role { CUSTOMER, SELLER};
 })
 export class RegisterComponent implements OnInit {
   signUpUser: RegisterReq;
-  OTPVerified: boolean;
+  verifyOTPUser: VerifyOTPReq;
+
+  isOTPVerified: boolean;
   verifiedEmail: string;
-  OTPCode:number;
+  OTPCode: Number;
 
   check_box_type = Role;
 
@@ -45,18 +48,19 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.signUpUser = new RegisterReq();
-    this.OTPVerified = false;
+    this.isOTPVerified = false;
+    this.verifyOTPUser = new VerifyOTPReq();
   }
 
   onSubmit(f: NgForm): void{
-
     if(f.value.email.length >= 5 && f.value.email.length <= 30 && f.value.password.length >= 8){
       this.signUpUser.email = f.value.email;
       this.signUpUser.password = f.value.password;
       this.authService.register(this.signUpUser).subscribe(
          (userOTP) => {
-           this.OTPVerified = true;
+           this.isOTPVerified = true;
            this.verifiedEmail = userOTP.email;
+           this.verifyOTPUser.userId = userOTP.userId;
         }
         ,(err) => {
            console.log(err);
@@ -65,7 +69,14 @@ export class RegisterComponent implements OnInit {
   }
 
   onSubmitOTP(f: NgForm): void{
-    console.log(f.value);
+    if(this.OTPCode != null ){
+      this.verifyOTPUser.otpCode = this.OTPCode.toString();
+      this.authService.verifyOTP(this.verifyOTPUser).subscribe(
+        (success) => {
+          console.log(success.headers.get("Authorization"));
+        }
+      )
+    }
   }
 
 

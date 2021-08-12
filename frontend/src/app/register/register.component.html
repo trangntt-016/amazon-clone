@@ -6,7 +6,7 @@
     />
   </a>
 
-  <div class='register__container'*ngIf="!OTPVerified">
+  <div class='register__container'*ngIf="!isOTPVerified">
     <h1>Create account</h1>
 
     <form  #f="ngForm">
@@ -45,7 +45,7 @@
     </form>
   </div>
 
-  <div class='register__container'*ngIf="OTPVerified">
+  <div class='register__container'*ngIf="isOTPVerified">
     <h1>Verify email address</h1>
     <h5 class="h5_verified">To verify your email, we've sent a One Time Password (OTP) to {{verifiedEmail}}</h5>
     <form  #verifiedF="ngForm" (submit)="onSubmitOTP(verifiedF)">
@@ -55,7 +55,7 @@
              [(ngModel)]="OTPCode"
              name="OTPCode"
       >
-      <button type='submit' class='register__signInButton'>Create Your Amazon Account</button>
+      <button type='submit' class='register__signInButton'(click)="onSubmitOTP(verifiedF)" >Create Your Amazon Account</button>
       <h5 class="h5_verified">By creating an account, you agree to Amazon's Conditions of Use and Privacy Notice.</h5>
     </form>
   </div>

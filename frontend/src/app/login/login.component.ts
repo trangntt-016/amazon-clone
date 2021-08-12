@@ -6,6 +6,7 @@ import { LoginReq } from '../model/LoginReq';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
+
 export class LoginComponent implements OnInit {
   loginUser: LoginReq;
 
@@ -14,9 +15,8 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.loginUser = new LoginReq();
   }
-  onChange(event){
+  onChange(event): void{
     this.loginUser.isRememberMe = event;
-
   }
 
 }
