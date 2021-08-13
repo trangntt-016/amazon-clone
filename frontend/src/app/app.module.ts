@@ -15,6 +15,7 @@ import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { SellerStartComponent } from './seller/seller-start/seller-start.component';
 import { SellerNewproductComponent } from './seller/seller-newproduct/seller-newproduct.component';
+import { SellerHeaderComponent } from './seller/seller-header/seller-header.component';
 
 
 
@@ -27,7 +28,8 @@ import { SellerNewproductComponent } from './seller/seller-newproduct/seller-new
     LoginComponent,
     RegisterComponent,
     SellerStartComponent,
-    SellerNewproductComponent
+    SellerNewproductComponent,
+    SellerHeaderComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,33 @@
+.header{
+  height: 40px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  padding: 0 100px 0 100px;
+}
+
+.header__logo {
+  width: 80px;
+  object-fit: contain;
+  margin: 10px 20px 0;
+}
+
+.mat-flat-button{
+  color: #232f3e;
+}
+
+.header__nav {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.header__option {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #232f3e;
+}
