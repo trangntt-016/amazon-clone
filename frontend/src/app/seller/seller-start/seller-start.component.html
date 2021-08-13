@@ -1,0 +1,37 @@
+<div class="seller__start">
+  <div class="header">
+    <a [routerLink]="['/']">
+      <img class="header__logo" src="https://m.media-amazon.com/images/G/01/sell/navigation/logos/amazon-ca-half-logo.svg"/>
+    </a>
+
+    <div class="header__nav">
+      <div class="header__option">
+        <span class="header__optionLineOne">Hello {{sellername}}</span>
+        <span class="header__optionLineTwo">Welcome</span>
+      </div>
+
+      <div class="header__option">
+        <span class="header__optionLineOne">View</span>
+        <span class="header__optionLineTwo">All Products</span>
+      </div>
+
+
+      <div class="header__option">
+        <span class="header__optionLineOne">View</span>
+        <span class="header__optionLineTwo">All Sales</span>
+      </div>
+
+    </div>
+  </div>
+  <div class="seller__banner">
+    <div class="seller__text">
+      <h1>Start selling today</h1>
+      <h3>Put your products in front of the millions of customers who search <u>Amazon.ca</u> every day.</h3>
+      <button mat-raised-button [routerLink]="['/seller/new-product']">Add a product</button>
+    </div>
+    <div class="seller__image">
+      <img src="https://m.media-amazon.com/images/G/01/sell/images/bg/illustration-pf-home-2x._CB441100178_.png">
+    </div>
+  </div>
+
+</div>

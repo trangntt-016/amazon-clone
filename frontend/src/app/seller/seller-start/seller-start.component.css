@@ -1,0 +1,135 @@
+.seller__start{
+  width:100%;
+  height: 100vh;
+  overflow: hidden;
+  background-color: white
+}
+
+.header {
+  height: 60px;
+  display: flex;
+  align-items: center;
+  background-color: #fff;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  margin-left:calc(20vw/2);
+}
+
+.header__logo {
+  width: 100px;
+  object-fit: contain;
+  margin: 18px 20px 0;
+}
+
+.header__delivered{
+  display: flex;
+  color: #232f3e;
+  margin: 0 20px 0 0;
+}
+.header__search {
+  display: flex;
+  flex: 1;
+  align-items: center;
+
+}
+
+.header__searchInput {
+  height: 12px;
+  padding: 10px;
+  border: none;
+  width: 100%;
+}
+
+.header__searchIcon {
+  padding: 5px;
+  height: 22px !important;
+  background-color: #cd9042;
+}
+
+.header__optionLineOne {
+  font-size: 10px;
+}
+
+.header__optionLineTwo {
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.header__optionBasket {
+  display: flex;
+  align-items: center;
+  color: #232f3e;
+}
+
+.header__basketCount {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.header__nav {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.header__option {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+  margin-right: 10px;
+  color: #232f3e;
+}
+
+.seller__banner{
+  margin-top: 50px;
+  width: 100%;
+  height: 100%;
+  background-image: url("https://m.media-amazon.com/images/G/01/sell/images/illustration/pf-wave-horizon-1.svg");
+  background-repeat: round space;
+  display: flex;
+}
+
+.seller__text{
+  margin-top: calc(50vh/2);
+  margin-left: calc(20vw/2);
+  margin-right:30px;
+  width: 50%;
+  height: 100%;
+}
+
+.seller__text >h1{
+  font-size: 50px;
+  color:#232f3e;
+}
+
+.seller__text >h3{
+  font-size: 20px;
+  font-weight: 400;
+  margin-top:20px;
+}
+
+.mat-raised-button{
+  background-color: #f90;
+  border: 2px solid #f90;
+  color:#232f3e;
+  font-size: 24px!important;
+  border-radius:30px;
+  padding:10px 20px 10px 20px;
+  margin-top:30px;
+  box-shadow: 0 0 16px rgb(0 0 0 / 20%)
+}
+
+.mat-raised-button:hover{
+  filter: brightness(110%);
+}
+
+.seller__image{
+  width: 50%;
+  height: 100%;
+}
+.seller__image>img{
+  width: 100%;
+  height: 80%;
+  object-fit: scale-down;
+}
+

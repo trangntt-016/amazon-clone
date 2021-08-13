@@ -13,6 +13,8 @@ import { HomeComponent } from './home/home.component';
 import { TestComponent } from './test/test.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { SellerStartComponent } from './seller/seller-start/seller-start.component';
+import { SellerNewproductComponent } from './seller/seller-newproduct/seller-newproduct.component';
 
 
 
@@ -23,7 +25,9 @@ import { RegisterComponent } from './register/register.component';
     HomeComponent,
     TestComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    SellerStartComponent,
+    SellerNewproductComponent
   ],
   imports: [
     BrowserModule,
