@@ -4,7 +4,8 @@
 
 export const environment = {
   production: false,
-  userAPI: 'http://localhost:3000/api/users'
+  userAPI: 'http://localhost:3000/api/users',
+  categoryAPI: 'http://localhost:3000/api/categories'
 };
 /*
  * For easier debugging in development mode, you can import the following file

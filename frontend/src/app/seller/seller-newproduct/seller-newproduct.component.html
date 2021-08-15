@@ -6,49 +6,44 @@
     <h4><b>Browse</b></h4>
 
     <div class="header__search">
-      <div class="header__searchInput">
+      <div class="header__searchInput" *ngIf="!shouldShowTree">
         Select a category
       </div>
+      <div class="header__categoryTree" *ngIf="shouldShowTree">
+        {{tree}}
+      </div>
       <div class="header__searchIcon">
-        <mat-icon>search</mat-icon>
+        <mat-icon (click)="clearTreeCategory()">clear</mat-icon>
       </div>
     </div>
 
     <div class="body__browser">
-      <div class="body__container">
+      <div class="body__container" *ngFor="let category of categories" (click)="selectCategory(category)">
         <mat-icon>star_border</mat-icon>
         <div class="header__browserInput">
-          Select a category
+          {{category.name}}
         </div>
-        <div class="header__browseIcon">
+        <div class="header__browseIcon" *ngIf="category.isHasChildren">
           <mat-icon>keyboard_arrow_right</mat-icon>
         </div>
-      </div>
-      <div class="body__container">
-        <div class="header__browserInput">
-          Select a category
+        <div class="header__selectIcon" *ngIf="!category.isHasChildren && selectId!=category.id">
+          <button mat-flat-button>Select category</button>
         </div>
-        <div class="header__browseIcon">
-          <mat-icon>keyboard_arrow_right</mat-icon>
-        </div>
-      </div>
-      <div class="body__container">
-        <div class="header__browserInput">
-          Select a category
-        </div>
-        <div class="header__browseIcon">
-          <mat-icon>keyboard_arrow_right</mat-icon>
-        </div>
-      </div>
-      <div class="body__container">
-        <div class="header__browserInput">
-          Select a category
-        </div>
-        <div class="header__browseIcon">
-          <mat-icon>keyboard_arrow_right</mat-icon>
+        <div class="header__selectIcon selected" *ngIf="!category.isHasChildren &&selectId==category.id">
+          <button mat-flat-button><mat-icon>checked</mat-icon>Selected</button>
+
         </div>
       </div>
 
     </div>
   </div>
+
+  <div class="add__container">
+    <h3>Add product information</h3>
+    <h4>When multiple sellers sell the same product through a single detail page, we combine and present the best product data to ensure customers get the best experience.</h4>
+    <h4><b>Browse</b></h4>
+
+
+  </div>
 </div>
+

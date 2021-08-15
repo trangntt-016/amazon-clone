@@ -65,6 +65,10 @@ public class CategoryRepositoryTests {
                     System.out.println("--"+sub.getName());
                 }
             }
+            if(category.getChildren().size()>0){
+                category.setIsHasChildren(true);
+                categoryRepository.save(category);
+            }
         }
     }
 

@@ -1,6 +1,7 @@
 package com.canada.aws.model;
 
 import com.canada.aws.utils.IdBasedEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,8 +28,12 @@ public class Category extends IdBasedEntity {
     @Column(name = "all_parent_ids", length = 256, nullable = true)
     private String allParentIDs;
 
+    @Column(name = "is_has_children", length = 256, nullable = false)
+    private Boolean isHasChildren;
+
     @OneToOne
     @JoinColumn(name = "parent_id")
+    @JsonIgnore
     private Category parent;
 
     @OneToMany(mappedBy = "parent")

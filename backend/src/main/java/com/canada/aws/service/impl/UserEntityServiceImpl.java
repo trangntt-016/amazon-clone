@@ -15,8 +15,6 @@ import com.canada.aws.repo.UserEntityRepository;
 import com.canada.aws.security.jwt.TokenProvider;
 import com.canada.aws.service.UserEntityService;
 import com.canada.aws.utils.MapperUtils;
-import org.apache.catalina.User;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
