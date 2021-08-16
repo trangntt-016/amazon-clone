@@ -28,7 +28,7 @@ public class Category extends IdBasedEntity {
     @Column(name = "all_parent_ids", length = 256, nullable = true)
     private String allParentIDs;
 
-    @Column(name = "is_has_children", length = 256, nullable = false)
+    @Column(name = "is_has_children", length = 256, nullable = true)
     private Boolean isHasChildren;
 
     @OneToOne

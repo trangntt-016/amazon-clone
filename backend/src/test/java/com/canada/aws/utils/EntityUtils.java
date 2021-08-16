@@ -1,4 +1,4 @@
-package utils;
+package com.canada.aws.utils;
 
 import javassist.NotFoundException;
 import lombok.AllArgsConstructor;
