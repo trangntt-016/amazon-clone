@@ -1,6 +1,7 @@
 package com.canada.aws.repo;
 
 import com.canada.aws.model.Category;
+import com.canada.aws.utils.EntityUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,6 +15,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 public class CategoryRepositoryTests {
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    EntityUtils entityUtils;
 
     @Test
     public void testCreateRootCategory(){
@@ -74,5 +78,12 @@ public class CategoryRepositoryTests {
         List<Category> roots = categoryRepository.findRootCategories();
 
         assertThat(roots.size()).isGreaterThan(0);
+    }
+
+    @Test
+    public void testListAllBrandsByCategoryId(){
+        Category randomCategory = entityUtils.generateRandomEntity(categoryRepository, categoryRepository.findAll().get(0).getId());
+        List<Integer>brandIds = categoryRepository.findAllBrandIdsByCategoryId(randomCategory.getId());
+        assertThat(brandIds.size()).isGreaterThanOrEqualTo(0);
     }
 }

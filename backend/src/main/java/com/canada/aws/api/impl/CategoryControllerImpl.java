@@ -2,6 +2,7 @@ package com.canada.aws.api.impl;
 
 
 import com.canada.aws.api.CategoryController;
+import com.canada.aws.model.Brand;
 import com.canada.aws.model.Category;
 import com.canada.aws.service.impl.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,5 +23,12 @@ public class CategoryControllerImpl implements CategoryController {
         List<Category>rootCategories = categoryService.getRootCategories();
 
         return ResponseEntity.ok(rootCategories);
+    }
+
+    @Override
+    public ResponseEntity<?> getAllBrandsByCategoryId(Integer categoryId) {
+        List<Brand>brands = categoryService.getAllBrandsByCategoryId(categoryId);
+
+        return ResponseEntity.ok(brands);
     }
 }

@@ -15,4 +15,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
 
     @Query("SELECT c FROM Category c WHERE c.name =:name")
     Optional<Category> findCategoryByName(String name);
+
+    @Query(value = "SELECT brand_id FROM brands_categories WHERE category_id =:category_id", nativeQuery = true)
+    List<Integer> findAllBrandIdsByCategoryId(Integer category_id);
 }
