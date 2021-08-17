@@ -6,8 +6,7 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
-
+export class BrandService {
   httpOptions: {headers: HttpHeaders} = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
@@ -16,11 +15,7 @@ export class CategoryService {
     private http: HttpClient
   ) { }
 
-  getRootCategories(): Observable<any>{
+  getBrandFromCategory(): Observable<any>{
     return this.http.get<any>(`${environment.categoryAPI}/root`);
-  }
-
-  getBrandsFromCategoryId(categoryId: number): Observable<any>{
-    return this.http.get<any>(`${environment.categoryAPI}/${categoryId}/brands`);
   }
 }

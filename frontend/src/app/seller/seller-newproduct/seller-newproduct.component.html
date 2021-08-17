@@ -41,9 +41,76 @@
   <div class="add__container">
     <h3>Add product information</h3>
     <h4>When multiple sellers sell the same product through a single detail page, we combine and present the best product data to ensure customers get the best experience.</h4>
-    <h4><b>Browse</b></h4>
+    <h4><b>Fill In</b></h4>
+    <div class="product__info_container">
+      <div class="product__basic_wrapper">
+        <div class="product_name">
+          <p>Product Name</p>
+          <input matInput
+                 name="product-name"
+          >
+        </div>
+        <div class="product_brand">
+          <p>Brand Name</p>
+          <ng-select [items]="brands"
+                     bindLabel="name"
+                     bindValue="name"
+                     placeholder="Search a brand"
+                     [(ngModel)]="selectedBrand">
+            <ng-template ng-header-tmp>
+              {{placeHolderTextSelectBrand}}
+            </ng-template>
+            <ng-template ng-label-tmp let-item="item">
+              <img height="15" width="15" [src]="item.logo" style="margin-right: 5px"/>
+              <b>{{item.name}}</b>
+            </ng-template>
+            <ng-template ng-option-tmp let-item="item" let-index="index">
+              <img height="15" width="15" [src]="item.logo" style="margin-right: 5px"/>
+              <b>{{item.name}}</b>
+            </ng-template>
+          </ng-select>
+        </div>
 
+        <div class="product_quantity">
+          <p>Quantity</p>
+          <input matInput name="product-quantity">
+        </div>
+      </div>
+      <div class="product_description_wrapper">
+        <p>Description</p>
+        <angular-editor  [config]="editorConfig"></angular-editor>
+      </div>
+      <div class="product_price_discount_wrapper">
+        <div class="product_price">
+          <p>Price</p>
+          <input matInput name="product-cost">
+        </div>
+        <div class="product__discount">
+          <p>Discount Price</p>
+          <input matInput name="product-discount">
+        </div>
+        <div class="product__discount_discount-start-end">
+          <p>Discount is valid from</p>
+          <mat-form-field appearance="fill">
+            <mat-date-range-input [rangePicker]="picker">
+              <input matStartDate placeholder="Start date">
+              <input matEndDate placeholder="End date">
+            </mat-date-range-input>
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-date-range-picker #picker></mat-date-range-picker>
+          </mat-form-field>
+        </div>
+      </div>
+    </div>
 
+  </div>
+  <div class="add__container">
+    <h3>Your image recommendations</h3>
+    <h4>Upload your recommendations for product images.</h4>
+    <h4><b>See image guidelines</b></h4>
+    <div class="product__info_container">
+      <div>hi</div>
+    </div>
   </div>
 </div>
 

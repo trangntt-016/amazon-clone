@@ -22,6 +22,8 @@
     "@angular/platform-browser-dynamic": "~11.2.13",
     "@angular/router": "~11.2.13",
     "@auth0/angular-jwt": "^5.0.2",
+    "@kolkov/angular-editor": "^1.2.0",
+    "@ng-select/ng-select": "^6.1.0",
     "angular-responsive-carousel": "^2.0.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

@@ -1,13 +1,20 @@
 import { NgModule } from '@angular/core';
 
 import {IvyCarouselModule} from 'angular-responsive-carousel';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+
 
 @NgModule({
   imports: [
-    IvyCarouselModule
+    IvyCarouselModule,
+    NgSelectModule,
+    AngularEditorModule
   ],
   exports: [
-    IvyCarouselModule
+    IvyCarouselModule,
+    NgSelectModule,
+    AngularEditorModule
   ]
 })
 export class PackagesModule {

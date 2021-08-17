@@ -19,6 +19,8 @@ import { SellerHeaderComponent } from './seller/seller-header/seller-header.comp
 
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -38,6 +40,7 @@ import { SellerHeaderComponent } from './seller/seller-header/seller-header.comp
     HttpClientModule,
     MaterialModule,
     PackagesModule
+
   ],
   providers: [],
   bootstrap: [AppComponent]

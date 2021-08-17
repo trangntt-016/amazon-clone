@@ -1,16 +1,21 @@
-<div style="width: 500px;">
-  <div style="display:flex; flex-direction: row; justify-content: space-between;margin-bottom:10px">
-    <img style = "object-fit: contain;width: 100px;margin-right:150px"src = "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/1024px-Amazon_logo.svg.png">
-    <h2 style="font-weight: 300">Verify your new Amazon account</h2>
-  </div>
-  <hr>
-  <div style="margin-top:10px;text-align: justify">
-    <p>To verify your email address, please use the following One Time Password (OTP):</p>
-    <br>
-    <h2>942929</h2>
-    <br>
-    <p>Do not share this OTP with anyone. Amazon takes your account security very seriously. Amazon Customer Service will never ask you to disclose or verify your Amazon password, OTP, credit card, or banking account number. If you receive a suspicious email with a link to update your account information, do not click on the link—instead, report the email to Amazon for investigation.</p>
-    <br>
-    <p>Thank you</p>
-  </div>
-</div>
+<label>Custom templates</label>
+<ng-select [items]="brands"
+           bindLabel="name"
+           bindValue="name"
+           placeholder="Select city"
+           [(ngModel)]="selectedBrand">
+  <ng-template ng-header-tmp>
+    Custom header
+  </ng-template>
+  <ng-template ng-label-tmp let-item="item">
+    <img height="15" width="15" [src]="item.logo" style="margin-right: 5px"/>
+    <b>{{item.name}}</b>
+  </ng-template>
+  <ng-template ng-option-tmp let-item="item" let-index="index">
+    <img height="15" width="15" [src]="item.logo" style="margin-right: 5px"/>
+    <b>{{item.name}}</b>
+  </ng-template>
+  <ng-template ng-footer-tmp>
+    Custom footer
+  </ng-template>
+</ng-select>
