@@ -108,9 +108,25 @@
     <h3>Your image recommendations</h3>
     <h4>Upload your recommendations for product images.</h4>
     <h4><b>See image guidelines</b></h4>
-    <div class="product__info_container">
-      <div>hi</div>
+    <div class="product__image_wrapper">
+      <div class="gallery">
+        <div class="gallery__item" *ngFor="let item of product.extraImages; let i = index">
+          <label  class="hoverable" for="i">
+            <img (click)="getIndex(i)" [src]="urls[i] ? urls[i] : 'https://benestudio.co/wp-content/uploads/2017/01/custom-upload.png'" class="gallery__img" alt="Image 1">
+            <button mat-raised-button class="hover-text">Upload a file</button>
+            <div class="background"></div>
+            <p *ngIf="i==0">Main</p>
+            <p *ngIf="i>0">ProductImage PT0{{i+1}}</p>
+          </label>
+          <input class="fileInput" id="i" type='file' (change)="onSelectFile($event)" >
+        </div>
+      </div>
+
     </div>
+  </div>
+  <div class="add__container save">
+    <button mat-raised-button class="cancel">Cancel</button>
+    <button mat-raised-button (click)="submit()">Create</button>
   </div>
 </div>
 

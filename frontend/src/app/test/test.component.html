@@ -1,21 +1,4 @@
-<label>Custom templates</label>
-<ng-select [items]="brands"
-           bindLabel="name"
-           bindValue="name"
-           placeholder="Select city"
-           [(ngModel)]="selectedBrand">
-  <ng-template ng-header-tmp>
-    Custom header
-  </ng-template>
-  <ng-template ng-label-tmp let-item="item">
-    <img height="15" width="15" [src]="item.logo" style="margin-right: 5px"/>
-    <b>{{item.name}}</b>
-  </ng-template>
-  <ng-template ng-option-tmp let-item="item" let-index="index">
-    <img height="15" width="15" [src]="item.logo" style="margin-right: 5px"/>
-    <b>{{item.name}}</b>
-  </ng-template>
-  <ng-template ng-footer-tmp>
-    Custom footer
-  </ng-template>
-</ng-select>
+<h1>Upload and Download File</h1>
+<input type="file" id="customFile" (change)="selectFile($event, i)" *ngFor="let item of product.extraImages; let i = index">
+<button class="btn btn-primary" [disabled]="!selectedFiles" (click)="upload()">Save File</button>
+<button class="btn btn-primary" style="margin-left: 10px" (click)="downloadFile()">View File</button>
