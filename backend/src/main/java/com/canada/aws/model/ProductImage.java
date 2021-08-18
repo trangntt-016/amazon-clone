@@ -2,6 +2,7 @@ package com.canada.aws.model;
 
 import com.canada.aws.utils.IdBasedEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -10,6 +11,7 @@ import javax.persistence.*;
 @Table(name="product_images")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class ProductImage extends IdBasedEntity {
     @Column(name="name")
     private String name;

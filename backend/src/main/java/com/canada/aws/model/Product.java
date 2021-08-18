@@ -37,16 +37,22 @@ public class Product extends IdBasedEntity {
     private Date updatedTime;
 
     @Column(name = "quantity")
-    private boolean quantity;
+    private Integer quantity;
 
-    @Column(name = "discount_percent")
-    private float discountPercent;
+    @Column(name = "discount_price")
+    private float discountPrice;
 
     @Column(name="price")
     private float price;
 
-    @Column(name = "main_image", nullable = false)
+    @Column(name = "main_image", nullable = true)
     private String mainImage;
+
+    @Column(name="discount_start")
+    private Date discountStart;
+
+    @Column(name="discount_end")
+    private Date discountEnd;
 
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -57,6 +63,6 @@ public class Product extends IdBasedEntity {
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<ProductImage> images = new HashSet<>();
+    private Set<ProductImage> extraImages = new HashSet<>();
 
 }
