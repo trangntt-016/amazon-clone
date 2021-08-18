@@ -22,22 +22,22 @@ export class ProductDto {
 
   extraImages: File[];
 
-  category: Category;
+  category_id: number;
 
-  brand: Brand;
+  brand_id: number;
 
   constructor(){
     this.name = '';
     this.fullDescription = '';
     this.createdTime = new Date();
-    this.quantity = 0;
-    this.price = 0.0;
-    this.discountPrice = 0;
+    this.quantity = null;
+    this.price = null;
+    this.discountPrice = null;
     this.discountStart = null;
     this.discountEnd = null;
     this.mainImage = null;
     this.extraImages = new Array(8);
-    this.category = null;
-    this.brand = null;
+    this.category_id = null;
+    this.brand_id = null;
   }
 }

@@ -48,6 +48,7 @@
           <p>Product Name</p>
           <input matInput
                  name="product-name"
+                 [(ngModel)]="product.name"
           >
         </div>
         <div class="product_brand">
@@ -73,28 +74,28 @@
 
         <div class="product_quantity">
           <p>Quantity</p>
-          <input matInput name="product-quantity">
+          <input matInput name="product-quantity" [(ngModel)]="product.quantity">
         </div>
       </div>
       <div class="product_description_wrapper">
         <p>Description</p>
-        <angular-editor  [config]="editorConfig"></angular-editor>
+        <angular-editor  [(ngModel)]="product.fullDescription" [config]="editorConfig"></angular-editor>
       </div>
       <div class="product_price_discount_wrapper">
         <div class="product_price">
           <p>Price</p>
-          <input matInput name="product-cost">
+          <input matInput name="price" [(ngModel)]="product.price">
         </div>
         <div class="product__discount">
           <p>Discount Price</p>
-          <input matInput name="product-discount">
+          <input matInput name="product-discount" [(ngModel)]="product.discountPrice">
         </div>
         <div class="product__discount_discount-start-end">
           <p>Discount is valid from</p>
           <mat-form-field appearance="fill">
             <mat-date-range-input [rangePicker]="picker">
-              <input matStartDate placeholder="Start date">
-              <input matEndDate placeholder="End date">
+              <input matStartDate placeholder="Start date" [(ngModel)]="product.discountStart">
+              <input matEndDate placeholder="End date" [(ngModel)]="product.discountEnd">
             </mat-date-range-input>
             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-date-range-picker #picker></mat-date-range-picker>

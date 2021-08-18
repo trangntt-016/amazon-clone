@@ -159,6 +159,7 @@
   height: 25px;
   border: 1px solid lightgray;
   border-radius:5px;
+  padding-left: 10px
 }
 .product_name > input{
   width: 200px;

@@ -69,9 +69,11 @@ export class SellerNewproductComponent implements OnInit {
     }
     else if (!category.isHasChildren){
       this.selectId = category.id;
+      this.product.category_id = category.id;
+
       let rootSelectedName = null;
       if (this.tree.length > 0){
-        rootSelectedName = this.tree.split(">")[0].trim();
+        rootSelectedName = this.tree.split('>')[0].trim();
       }
       else{
         rootSelectedName = category.name;
@@ -81,10 +83,10 @@ export class SellerNewproductComponent implements OnInit {
 
       this.categoryService.getBrandsFromCategoryId(rootSelectedCategory.id).subscribe((brands) => {
         this.brands = brands;
-      })
+      });
 
-      this.product.category = rootSelectedCategory;
-      this.placeHolderTextSelectBrand = rootSelectedName + "'s brands";
+      this.product.category_id = rootSelectedCategory.id;
+      this.placeHolderTextSelectBrand = rootSelectedName + '\'s brands';
     }
 
     if (this.tree.indexOf(category.name) < 0){
@@ -100,13 +102,13 @@ export class SellerNewproductComponent implements OnInit {
   clearTreeCategory(): void{
     this.tree = '';
     this.shouldShowTree = false;
-    this.categoryService.getRootCategories().subscribe((categories) =>{
+    this.categoryService.getRootCategories().subscribe((categories) => {
       this.categories = categories;
-    })
+    });
     this.selectId = null;
-    this.placeHolderTextSelectBrand = "Select a category's brand";
+    this.placeHolderTextSelectBrand = 'Select a category\'s brand';
     this.selectedBrand = null;
-    this.product.category = null;
+    this.product.category_id = null;
   }
 
 
@@ -127,20 +129,39 @@ export class SellerNewproductComponent implements OnInit {
   submit(): void{
     const data: FormData = new FormData();
 
-    //this.product.brand = this.brands.filter(b => b.name == this.selectedBrand)[0];
+    this.product.brand_id = this.brands.filter(b => b.name === this.selectedBrand)[0].id;
 
     if (this.product.extraImages[0] !== null) {
      this.product.mainImage = this.product.extraImages[0];
      data.append('mainImage', this.product.mainImage);
     }
-    // if (this.product.extraImages.length > 0) {
-    //   this.product.extraImages = this.product.extraImages.filter(image => image.name !== null);
-    //   this.product.extraImages.forEach(p => {
-    //     data.append('mainImages',p);
-    //   });
-    // }
-    //console.log(data.getAll('mainImages'));
-    this.productService.createAProduct(data);
+    if (this.product.extraImages.length > 0) {
+      this.product.extraImages = this.product.extraImages.filter(image => image.name !== null);
+      this.product.extraImages.forEach(p => {
+        data.append('extraImages', p);
+      });
+    }
+
+    data.append('name', this.product.name);
+    data.append('fullDescription', this.product.fullDescription);
+    data.append('createdTime', this.product.createdTime.toString());
+    data.append('quantity', this.product.quantity.toString());
+    data.append('price', this.product.price.toString());
+
+    if(this.product.discountPrice > 0){
+      data.append('discountPrice', this.product.discountPrice.toString());
+      data.append('discountStart', this.product.discountStart.toString());
+      data.append('discountEnd', this.product.discountEnd.toString());
+    }
+
+    data.append('category_id', this.product.category_id.toString());
+
+    data.append('brand_id', this.product.brand_id.toString());
+
+    this.productService.createAProduct(data).subscribe(event => {
+      this.product.extraImages = new Array(8);
+      console.log('Upload successfully!');
+    });
     }
 
 

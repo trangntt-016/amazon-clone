@@ -29,12 +29,8 @@ export class ProductService {
     return null;
   }
 
-  createAProduct(data: FormData): Observable<any>{
-    const newRequest = new HttpRequest('POST', `${environment.productAPI}/new`, data, {
-        reportProgress: true,
-        responseType: 'text'
-      });
-      return this.http.request(newRequest);
+  createAProduct(product: FormData): Observable<any>{
+    return this.http.post<any>(`${environment.productAPI}`, product);
   }
 
 }
