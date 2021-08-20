@@ -11,8 +11,15 @@
     </div>
   </div>
   <div class="header__search">
-    <input class="header__searchInput" type="text" />
-    <div class="header__searchIcon">
+    <div class="header__searchIcon header__search_categories">
+      <mat-form-field appearance="none">
+        <mat-select [(ngModel)]="selectedCategory" placeholder="All Categories">
+          <mat-option value="{{category.id}}" *ngFor="let category of rootCategories">{{category.name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <input class="header__searchInput" type="text" [(ngModel)]="selectedKeyword"/>
+    <div class="header__searchIcon" (click)="search()">
       <mat-icon>search</mat-icon>
     </div>
   </div>

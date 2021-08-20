@@ -20,6 +20,10 @@ export class CategoryService {
     return this.http.get<any>(`${environment.categoryAPI}/root`);
   }
 
+  getRootCategoriesForSearch(): Observable<any>{
+    return this.http.get<any>(`${environment.categoryAPI}/root-search`);
+  }
+
   getBrandsFromCategoryId(categoryId: number): Observable<any>{
     return this.http.get<any>(`${environment.categoryAPI}/${categoryId}/brands`);
   }

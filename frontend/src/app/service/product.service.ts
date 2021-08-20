@@ -33,4 +33,8 @@ export class ProductService {
     return this.http.post<any>(`${environment.productAPI}`, product);
   }
 
+  getProductsByCategoryIdKeyword(categoryId: number, keyword: string, pageIdx: number, perPage: number): Observable<any>{
+    return this.http.get<any>(`${environment.productAPI}?categoryId=${categoryId}&keyword=${keyword}&pageIdx=${pageIdx}&perPage=${perPage}`);
+  }
+
 }

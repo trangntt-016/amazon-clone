@@ -1,0 +1,89 @@
+<app-header></app-header>
+<div class="products-search">
+  <div class="show-result">
+    <div>
+      <p *ngIf="products.length > 0">1-{{products.length}} results for " <span>"{{selectedKeyword}}"</span>"</p>
+      <p *ngIf="products.length == 0">No products is found for <span>"{{selectedKeyword}}"</span></p>
+    </div>
+    <div>
+      <mat-select placeholder="Sort by: Features">
+        <mat-option value="{{feature.alias}}" *ngFor="let feature of featureCriteria">{{feature.name}}</mat-option>
+      </mat-select>
+    </div>
+  </div>
+  <div class="show-products">
+    <div class="criterias-wrapper">
+      <div class="criterion-wrapper">
+        <p class="bold">Avg. Customer Review</p>
+        <div class="star-wrapper">
+          <div class="stars four-star">
+            <div class="stars">
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+            </div>
+            <p class="up"> & Up</p>
+          </div>
+          <div class="stars four-star">
+            <div class="stars">
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+            </div>
+            <p class="up"> & Up</p>
+          </div>
+          <div class="stars four-star">
+            <div class="stars">
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+            </div>
+            <p class="up"> & Up</p>
+          </div>
+          <div class="stars four-star">
+            <div class="stars">
+              <mat-icon class="staricon">star</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+              <mat-icon class="staricon">star_border</mat-icon>
+            </div>
+            <p class="up"> & Up</p>
+          </div>
+        </div>
+      </div>
+      <!-- criterion 2 -->
+      <div class="criterion-wrapper">
+        <p class="bold">Brand</p>
+        <div class="brandCheckbox-wrapper">
+          <mat-checkbox [(ngModel)]="brand.isChecked" *ngFor="let brand of brands" (change)="filterByBrand()">{{brand.name }}</mat-checkbox>
+        </div>
+      </div>
+
+      <!-- criterion 3 -->
+      <div class="criterion-wrapper">
+        <p class="bold">Price</p>
+        <p *ngFor="let criterion of priceCriteria; let i = index" (click)="filterByPrice(i)">{{criterion.name}}</p>
+      </div>
+
+      <!-- criterion 3 -->
+      <div class="criterion-wrapper">
+        <p class="bold">Seller</p>
+        <div class="brandCheckbox-wrapper">
+          <mat-checkbox [(ngModel)]="seller.isChecked" *ngFor="let seller of sellers" (change)="filterBySeller()">{{seller.name }}</mat-checkbox>
+        </div>
+      </div>
+
+    </div>
+    <div class="products__search_result">
+      <app-search-result [products]="products"></app-search-result>
+    </div>
+  </div>
+
+</div>

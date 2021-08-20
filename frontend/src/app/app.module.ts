@@ -16,6 +16,8 @@ import { RegisterComponent } from './register/register.component';
 import { SellerStartComponent } from './seller/seller-start/seller-start.component';
 import { SellerNewproductComponent } from './seller/seller-newproduct/seller-newproduct.component';
 import { SellerHeaderComponent } from './seller/seller-header/seller-header.component';
+import { ProductsComponent } from './product/products/products.component';
+import { SearchResultComponent } from './product/search-result/search-result.component';
 
 
 
@@ -31,7 +33,9 @@ import { SellerHeaderComponent } from './seller/seller-header/seller-header.comp
     RegisterComponent,
     SellerStartComponent,
     SellerNewproductComponent,
-    SellerHeaderComponent
+    SellerHeaderComponent,
+    ProductsComponent,
+    SearchResultComponent
   ],
   imports: [
     BrowserModule,
