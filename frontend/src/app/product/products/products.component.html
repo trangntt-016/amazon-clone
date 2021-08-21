@@ -2,7 +2,7 @@
 <div class="products-search">
   <div class="show-result">
     <div>
-      <p *ngIf="products.length > 0">1-{{products.length}} results for " <span>"{{selectedKeyword}}"</span>"</p>
+      <p *ngIf="products.length > 0">{{currentPage*40 + 1}}-{{currentPage * 40 + searchResult.products.length}} results of over {{searchResult.totalResults | number}} for <span>"{{searchResult.keyword}}"</span></p>
       <p *ngIf="products.length == 0">No products is found for <span>"{{selectedKeyword}}"</span></p>
     </div>
     <div>
@@ -62,7 +62,7 @@
       <div class="criterion-wrapper">
         <p class="bold">Brand</p>
         <div class="brandCheckbox-wrapper">
-          <mat-checkbox [(ngModel)]="brand.isChecked" *ngFor="let brand of brands" (change)="filterByBrand()">{{brand.name }}</mat-checkbox>
+          <mat-checkbox [(ngModel)]="brand.isChecked" *ngFor="let brand of searchResult.brands" (change)="filterByBrand(brand)">{{brand.name }}</mat-checkbox>
         </div>
       </div>
 
@@ -72,17 +72,28 @@
         <p *ngFor="let criterion of priceCriteria; let i = index" (click)="filterByPrice(i)">{{criterion.name}}</p>
       </div>
 
-      <!-- criterion 3 -->
+      <!--criterion 3 -->
       <div class="criterion-wrapper">
         <p class="bold">Seller</p>
         <div class="brandCheckbox-wrapper">
-          <mat-checkbox [(ngModel)]="seller.isChecked" *ngFor="let seller of sellers" (change)="filterBySeller()">{{seller.name }}</mat-checkbox>
+          <mat-checkbox [(ngModel)]="seller.isChecked" *ngFor="let seller of searchResult.sellers" (change)="filterBySeller()">{{seller.name }}</mat-checkbox>
         </div>
       </div>
 
     </div>
     <div class="products__search_result">
-      <app-search-result [products]="products"></app-search-result>
+      <app-search-result [products]="searchResult.products"></app-search-result>
+      <div class="pagination" *ngIf="searchResult.products.length > 0">
+            <button mat-button mat-raised-button (click)="previousPage()" [disabled]="hasPrevious===false">
+              <mat-icon>arrow_back</mat-icon>
+              Previous
+            </button>
+            <button mat-raised-button style="margin-left:15px; margin-right:15px">{{currentPage + 1}}</button>
+            <button mat-button mat-raised-button (click)="nextPage()" [disabled]="hasNext===false">
+              <mat-icon>arrow_forward</mat-icon>
+              Next
+            </button>
+      </div>
     </div>
   </div>
 

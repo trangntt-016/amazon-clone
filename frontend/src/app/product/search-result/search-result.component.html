@@ -1,5 +1,18 @@
 <div class="products__result">
   <div *ngFor="let p of products" class="product__container">
-    <img src="{{p.mainImage}}">
+    <div class="image_container">
+      <img [src]="p.mainImage" (error)="p.mainImage = 'https://www.elegantthemes.com/blog/wp-content/uploads/2019/10/2-2.png'">
+    </div>
+    <div class="text_container">
+      <p class="title">{{p.name}}</p>
+      <p class="price" *ngIf="!p.discountPrice">
+        <span>${{p.price |  number}}</span>
+      </p>
+      <p class="price" *ngIf="p.discountPrice">
+        <span>${{p.discountPrice |  number }}</span>
+        <span *ngIf="p.discountPrice" class="discount">${{p.price |  number}}</span>
+      </p>
+    </div>
+
   </div>
 </div>

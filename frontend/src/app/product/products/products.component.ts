@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../service/product.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductSearchDto } from '../../model/ProductSearchDto';
-import { Brand } from '../../model/Brand';
+import { ProductSearchResultDto } from '../../model/ProductSearchResultDto';
 import { BrandCheckBox } from '../../model/BrandCheckBox';
-import { SellerCheckbox } from '../../model/SellerCheckbox';
+import { ProductHelper } from '../../utils/ProductHelper';
 
 @Component({
   selector: 'app-products',
@@ -12,12 +12,14 @@ import { SellerCheckbox } from '../../model/SellerCheckbox';
   styleUrls: ['./products.component.css']
 })
 export class ProductsComponent implements OnInit {
-  categoryId: number;
+  helper: ProductHelper;
   selectedKeyword: string;
-  extractedKeyword: string;
+  selectedBrands: number[] = [];
+  currentPage: number;
+  searchResult: ProductSearchResultDto;
   products: ProductSearchDto[];
-  brands: BrandCheckBox[] = [];
-  sellers: SellerCheckbox[] = [];
+  hasNext: boolean;
+  hasPrevious: boolean;
   priceCriteria = [];
   featureCriteria = [];
   constructor(
@@ -27,6 +29,8 @@ export class ProductsComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.helper = new ProductHelper();
+
     this.featureCriteria = [
       {
         name:"Price: Low to High",
@@ -63,25 +67,65 @@ export class ProductsComponent implements OnInit {
         lessThan: 10000
       }
     ];
-    this.categoryId = this.activatedRoute.snapshot.queryParams["categoryId"];
-    this.selectedKeyword = this.activatedRoute.snapshot.queryParams["keyword"];
-    this.productService.getProductsByCategoryIdKeyword(this.categoryId, this.selectedKeyword, 0,10).subscribe(products => {
-      this.products = products;
-      this.products.forEach(p => {
-        if (this.brands.filter(br => br.name === p.brand.name).length === 0){
-          this.brands.push(p.brand);
+
+    this.activatedRoute.queryParams.subscribe(params => {
+      let categoryId =+ params['categoryId'];
+      if (params['brandId'] != undefined){
+        this.selectedBrands = this.helper.removeDuplicateInArray(params['brandId']);
+      }
+      const keyword = params["keyword"];
+
+      this.currentPage = parseInt (params["pageIdx"]);
+      this.selectedKeyword = keyword;
+      this.productService.getProductsByCategoryIdKeyword(categoryId, keyword, this.currentPage,40, this.selectedBrands.toString()).subscribe(result => {
+
+        this.searchResult = result;
+        this.products = this.searchResult.products;
+
+        if ((this.searchResult.products.length === 40 && this.searchResult.totalResults >= 40 * (this.currentPage + 1))){
+          this.hasNext = true;
         }
-        if(this.sellers.filter(sl => sl.name === p.seller.name).length === 0){
-          this.sellers.push(p.seller);
+        else if(this.searchResult.products.length < 40){
+          this.hasNext = false;
+        }
+        if(this.currentPage === 0){
+          this.hasPrevious = false;
+        }
+        else if(this.currentPage > 0){
+          this.hasPrevious = true;
         }
 
-
+        this.searchResult.brands.forEach( b => {
+          if(!this.helper.isUnique(this.selectedBrands, b.id)){
+            b.isChecked = true;
+          }
+        })
       });
-    })
+    });
   }
 
-  filterByBrand(): void{
-    console.log(this.brands.filter(b => b.isChecked==true));
+  filterByBrand(checkedBrand: BrandCheckBox): void{
+    const categoryId = this.activatedRoute.snapshot.queryParams["categoryId"];
+
+    //check if user checks true and not adds this brandId to url
+    if(checkedBrand.isChecked===true && this.helper.isUnique(this.selectedBrands, checkedBrand.id)){
+      this.selectedBrands.push(checkedBrand.id);
+      this.router.navigate([`products`], {queryParams:
+          {
+            categoryId,
+            keyword: this.selectedKeyword,
+            pageIdx: 0,
+            perPage: 40,
+            brandId: this.selectedBrands.toString()
+          }
+      });
+    }
+    // in case user wants to remove this brandId off the url
+    else{
+      let idx = this.selectedBrands.indexOf(checkedBrand.id);
+      
+    }
+
   }
 
   filterByPrice(i:number): void{
@@ -89,6 +133,40 @@ export class ProductsComponent implements OnInit {
   }
 
   filterBySeller(): void{
-    console.log(this.sellers.filter(s => s.isChecked==true));
+    console.log(this.searchResult.sellers.filter(s => s.isChecked==true));
+  }
+
+  nextPage(): void{
+    const perPage = parseInt(this.activatedRoute.snapshot.queryParams["perPage"]);
+    let pageIdx = parseInt(this.activatedRoute.snapshot.queryParams["pageIdx"]);
+    let categoryId = this.activatedRoute.snapshot.queryParams["categoryId"];
+    if (this.searchResult.products.length < this.searchResult.totalResults){
+      pageIdx += 1;
+      this.router.navigate([`products`], {queryParams:
+          {
+            categoryId: categoryId,
+            keyword: this.selectedKeyword,
+            pageIdx: pageIdx,
+            perPage: perPage
+          }
+      });
+    }
+  }
+
+  previousPage(): void{
+    const perPage = parseInt(this.activatedRoute.snapshot.queryParams["perPage"]);
+    let pageIdx = parseInt(this.activatedRoute.snapshot.queryParams["pageIdx"]);
+    let categoryId = this.activatedRoute.snapshot.queryParams["categoryId"];
+    if (perPage>0){
+      pageIdx -= 1;
+      this.router.navigate([`products`], {queryParams:
+          {
+            categoryId: categoryId,
+            keyword: this.selectedKeyword,
+            pageIdx: pageIdx,
+            perPage: perPage
+          }
+      });
+    }
   }
 }

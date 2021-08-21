@@ -33,8 +33,26 @@ export class ProductService {
     return this.http.post<any>(`${environment.productAPI}`, product);
   }
 
-  getProductsByCategoryIdKeyword(categoryId: number, keyword: string, pageIdx: number, perPage: number): Observable<any>{
-    return this.http.get<any>(`${environment.productAPI}?categoryId=${categoryId}&keyword=${keyword}&pageIdx=${pageIdx}&perPage=${perPage}`);
+  getProductsByCategoryIdKeyword(categoryId: number, keyword: string, pageIdx: number, perPage: number, brandIdStr: string): Observable<any>{
+    let queryParams = '';
+    if(categoryId !== 0 && !isNaN(categoryId)){
+      queryParams += 'categoryId=' + categoryId;
+    }
+    if(keyword !== null){
+      if(queryParams !== '') queryParams+='&';
+      queryParams += 'keyword=' + keyword;
+    }
+    if(pageIdx !== null){
+      if(queryParams !== '') queryParams+='&';
+      queryParams += 'pageIdx=' + pageIdx;
+    }
+    if(perPage !== null){
+      queryParams += '&perPage=' + perPage;
+    }
+    if(brandIdStr!=null){
+      queryParams += '&brandIdStr=' + brandIdStr;
+    }
+    return this.http.get<any>(`${environment.productAPI}?${queryParams}`);
   }
 
 }

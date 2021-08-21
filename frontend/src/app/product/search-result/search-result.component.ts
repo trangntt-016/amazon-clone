@@ -13,4 +13,8 @@ export class SearchResultComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  updateImgError(e){
+    console.log(e.target);
+  }
+
 }
