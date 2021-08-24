@@ -26,6 +26,12 @@ public class CategoryControllerImpl implements CategoryController {
     }
 
     @Override
+    public ResponseEntity<?> getRootCategoriesForSearch() {
+        List<Category> categories = categoryService.getRootCategoriesForSearch();
+        return ResponseEntity.ok(categories);
+    }
+
+    @Override
     public ResponseEntity<?> getAllBrandsByCategoryId(Integer categoryId) {
         List<Brand>brands = categoryService.getAllBrandsByCategoryId(categoryId);
 

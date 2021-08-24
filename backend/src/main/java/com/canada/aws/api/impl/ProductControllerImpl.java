@@ -2,6 +2,8 @@ package com.canada.aws.api.impl;
 
 import com.canada.aws.api.ProductController;
 import com.canada.aws.dto.ProductDto;
+import com.canada.aws.dto.ProductSearchDto;
+import com.canada.aws.dto.ProductSearchResultDto;
 import com.canada.aws.model.Product;
 import com.canada.aws.service.impl.ProductServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,14 +13,11 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
 
 @RestController
 @RequestMapping("/api/products")
@@ -38,56 +37,42 @@ public class ProductControllerImpl implements ProductController {
         }
     }
 
-//    @PostMapping("/new")
-//    public ResponseEntity<String> handleFileUpload(
-//            @RequestParam("mainImage") MultipartFile mainImageMultipart,
-//            @RequestParam("extraImages") MultipartFile[] extraMultipartFiles,
-//            ProductDto productDto) {
-//        String message;
-//        try {
-//            try {
-//                String fileName = StringUtils.cleanPath(mainImageMultipart.getOriginalFilename());
-//                String uploadDir = "../product-images/" + fileName;
-//
-////                FileUploadUtil.cleanDir(uploadDir);
-//                Path dirPath = Paths.get(uploadDir);
-//
-//                try {
-//                    Files.list(dirPath).forEach(fileD -> {
-//                        if (!Files.isDirectory(fileD)) {
-//                            try {
-//                                Files.delete(fileD);
-//                            } catch (IOException ex) {
-//
-//                            }
-//                        }
-//                    });
-//                } catch (IOException ex) {
-//
-//                }
-////                FileUploadUtil.saveFile(uploadDir, fileName, mainImageMultipart);
-//                Path uploadPath = Paths.get(uploadDir);
-//
-//                if (!Files.exists(uploadPath)) {
-//                    Files.createDirectories(uploadPath);
-//                }
-//
-//                try (InputStream inputStream = mainImageMultipart.getInputStream()) {
-//                    Path filePath = uploadPath.resolve(fileName);
-//                    Files.copy(inputStream, filePath, StandardCopyOption.REPLACE_EXISTING);
-//                } catch (IOException ex) {
-//                    throw new IOException("Could not save file: " + fileName, ex);
-//                }
-//            } catch (Exception e) {
-//                throw new RuntimeException("FAIL!");
-//            }
-//            files.add(mainImageMultipart.getOriginalFilename());
-//
-//            message = "Successfully uploaded!";
-//            return ResponseEntity.status(HttpStatus.OK).body(message);
-//        } catch (Exception e) {
-//            message = "Failed to upload!";
-//            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(message);
-//        }
-//    }
+    @Override
+    public ResponseEntity<?> getAllProductsByCategoryIdAndKeyWord(
+            Integer categoryId,
+            String keyword,
+            Integer pageIdx,
+            Integer perPage,
+            String brandIdStr,
+            Integer priceStart,
+            Integer priceEnd,
+            String sortType) {
+        // find all categories and brands
+        List<Product> productsByCategoryKeyword = new ArrayList<>();
+        List<Product>productsByFilter = null;
+        if(categoryId == null){
+            productsByCategoryKeyword = productService.getAllProductsByKeyword(keyword);
+        }
+        //find with category id and keyword
+        else{
+            productsByCategoryKeyword = productService.getAllProductsByCategoryIdAndKeyword(categoryId, keyword);
+        }
+
+        if(brandIdStr!=null){
+            List<Integer> brandIds = Arrays.stream(brandIdStr.split(",")).map(Integer::parseInt).collect(Collectors.toList());
+            productsByFilter = productService.filterByBrands(productsByCategoryKeyword, brandIds);
+        }
+        if(priceStart!=null && priceEnd != null){
+            productsByFilter = (productsByFilter == null) ? productsByCategoryKeyword : productsByFilter;
+            productsByFilter = productService.filterByPrice(productsByFilter, priceStart, priceEnd);
+        }
+        if(sortType!=null && sortType != ""){
+            productsByFilter = (productsByFilter == null) ? productsByCategoryKeyword : productsByFilter;
+            productsByFilter = productService.sortProducts(productsByFilter, sortType);
+        }
+        ProductSearchResultDto resultDto = productService.getSearchResult(productsByCategoryKeyword,productsByFilter, pageIdx, perPage, keyword);
+
+        return ResponseEntity.ok(resultDto);
+    }
+
 }

@@ -10,5 +10,7 @@ import java.util.List;
 public interface CategoryService {
     List<Category>getRootCategories();
 
+    List<Category>getRootCategoriesForSearch();
+
     List<Brand>getAllBrandsByCategoryId(Integer categoryId);
 }

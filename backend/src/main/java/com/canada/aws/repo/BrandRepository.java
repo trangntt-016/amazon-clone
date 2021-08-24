@@ -10,4 +10,6 @@ import java.util.List;
 
 @Repository
 public interface BrandRepository extends JpaRepository<Brand, Integer> {
+    @Query("SELECT b FROM Brand b WHERE b.name LIKE %:name%")
+    List<Brand> findBrandsContainsName(String name);
 }

@@ -10,6 +10,9 @@ public interface CategoryController {
     @GetMapping("/root")
     ResponseEntity<?> getRootCategories();
 
+    @GetMapping("/root-search")
+    ResponseEntity<?> getRootCategoriesForSearch();
+
     @GetMapping("/{categoryId}/brands")
     ResponseEntity<?> getAllBrandsByCategoryId(@PathVariable Integer categoryId);
 }

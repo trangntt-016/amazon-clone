@@ -46,12 +46,10 @@ public class CategoryRepositoryTests {
     }
 
     @Test
-    public void testGetAllChildrenFromSubCategory(){
-        Category parent = categoryRepository.findById(2).get();
-        Set<Category> childrenCategory = parent.getChildren();
-        for(Category category: childrenCategory){
-            System.out.println(category.getName());
-        }
+    public void testGetAllSubCategoriesFromARoot(){
+        String root = "5";
+        List<Category>subs = categoryRepository.findSubCategoriesFromARoot(root);
+        System.out.println(subs.get(0).getName());
     }
 
     @Test
@@ -85,5 +83,12 @@ public class CategoryRepositoryTests {
         Category randomCategory = entityUtils.generateRandomEntity(categoryRepository, categoryRepository.findAll().get(0).getId());
         List<Integer>brandIds = categoryRepository.findAllBrandIdsByCategoryId(randomCategory.getId());
         assertThat(brandIds.size()).isGreaterThanOrEqualTo(0);
+    }
+
+    @Test
+    public void testFindRootCategoryForSearch(){
+        List<Category>rootCategories = categoryRepository.findRootCategoriesForSearch();
+
+        assertThat(rootCategories.size()).isGreaterThan(0);
     }
 }

@@ -24,10 +24,7 @@ public class Product extends IdBasedEntity {
     @Column(length = 256, nullable = false)
     private String alias;
 
-    @Column(length = 512, nullable = true, name = "short_description")
-    private String shortDescription;
-
-    @Column(length = 4096, nullable = true, name = "full_description")
+    @Column(length = 4096, name = "full_description")
     private String fullDescription;
 
     @Column(name = "created_time")
@@ -40,10 +37,10 @@ public class Product extends IdBasedEntity {
     private Integer quantity;
 
     @Column(name = "discount_price")
-    private float discountPrice;
+    private Float discountPrice;
 
     @Column(name="price")
-    private float price;
+    private Float price;
 
     @Column(name = "main_image", nullable = true)
     private String mainImage;
@@ -61,6 +58,10 @@ public class Product extends IdBasedEntity {
     @ManyToOne
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private UserEntity seller;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductImage> extraImages = new HashSet<>();

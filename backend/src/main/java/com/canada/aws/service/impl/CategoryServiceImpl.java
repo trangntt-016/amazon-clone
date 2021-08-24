@@ -29,6 +29,11 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    public List<Category> getRootCategoriesForSearch(){
+        return categoryRepository.findRootCategoriesForSearch();
+    }
+
+    @Override
     public List<Brand> getAllBrandsByCategoryId(Integer categoryId) {
         List<Integer>brandIds = categoryRepository.findAllBrandIdsByCategoryId(categoryId);
 

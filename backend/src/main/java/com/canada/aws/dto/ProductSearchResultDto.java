@@ -1,2 +1,20 @@
-package com.canada.aws.dto;public class ProductSearchResultDto {
+package com.canada.aws.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class ProductSearchResultDto {
+    String keyword;
+    Integer totalResults;
+    List<ProductSearchDto> products;
+    List<SellerDto> sellers;
+    List<BrandDto> brands;
 }

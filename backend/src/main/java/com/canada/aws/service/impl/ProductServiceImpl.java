@@ -1,23 +1,25 @@
 package com.canada.aws.service.impl;
 
-import com.canada.aws.dto.ProductDto;
-import com.canada.aws.model.Brand;
-import com.canada.aws.model.Category;
-import com.canada.aws.model.Product;
-import com.canada.aws.model.ProductImage;
+import com.canada.aws.dto.*;
+import com.canada.aws.model.*;
 import com.canada.aws.repo.BrandRepository;
 import com.canada.aws.repo.CategoryRepository;
 import com.canada.aws.repo.ProductRepository;
 import com.canada.aws.service.ProductService;
 import com.canada.aws.utils.FileUploadUtils;
+import com.canada.aws.utils.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Locale;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -29,6 +31,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     CategoryRepository categoryRepository;
+
+    @Autowired
+    ProductServiceHelper productServiceHelper;
 
     public Product createAProduct(ProductDto productDto) throws IOException {
         String alias = productDto.getName()
@@ -59,10 +64,157 @@ public class ProductServiceImpl implements ProductService {
 
         savedProduct = productRepository.save(savedProduct);
 
-        saveImages(productDto.getMainImage(), productDto.getExtraImages(), savedProduct);
+        productServiceHelper.saveImages(productDto.getMainImage(), productDto.getExtraImages(), savedProduct);
 
         return savedProduct;
     }
+
+    @Override
+    public List<Product> getAllProductsByKeyword(String keyword){
+        Set<Product>productSet = new HashSet<>();
+        List<Category>categories = categoryRepository.findCategoriesContainsName(keyword.toLowerCase());
+        categories.forEach(c ->{
+            List<Product>productsOfCategory = productRepository.findAllByCategoryId(c.getId());
+            if(!productsOfCategory.isEmpty()){
+                productSet.addAll(productsOfCategory);
+            }
+        });
+
+        List<Brand>brands = brandRepository.findBrandsContainsName(keyword);
+        brands.forEach(b ->{
+            List<Product>productsOfBrand = productRepository.findAllByBrandId(b.getId());
+            if(!productsOfBrand.isEmpty()){
+                productSet.addAll(productsOfBrand);
+            }
+        });
+
+        List<Product>productsContainingKeyword = productRepository.findAllByProductName(keyword);
+        if(!productsContainingKeyword.isEmpty()){
+            productSet.addAll(productsContainingKeyword);
+        }
+
+
+        return productSet.stream().collect(Collectors.toList());
+    }
+
+
+    @Override
+    public List<Product> getAllProductsByCategoryIdAndKeyword(
+            Integer categoryId,
+            String keyword
+    ) {
+        List<Category>subCategories = categoryRepository.findSubCategoriesFromARoot(categoryId.toString());
+        List<Integer>categoryIds = subCategories.stream().map(Category::getId).collect(Collectors.toList());
+        categoryIds.add(categoryId);
+        List<Product> productList = productRepository.findAllByCategoryIdsKeyword(categoryIds,keyword);
+        return productList;
+
+    }
+
+    @Override
+    public List<Product> filterByBrands(List<Product> products, List<Integer>brandIds) {
+        List<Product>productList = new ArrayList<>();
+        for(Integer i: brandIds){
+            List<Product> pFilter = products.stream().filter(p->p.getBrand().getId().equals(i)).collect(Collectors.toList());
+            productList.addAll(pFilter);
+        }
+        return productList;
+    }
+
+    @Override
+    public List<Product> filterByPrice(List<Product> products, Integer priceStart, Integer priceEnd) {
+        return products.stream().filter(p -> {
+            if(p.getDiscountPrice()!=null) return p.getDiscountPrice()>=priceStart && p.getDiscountPrice() <priceEnd;
+
+            return p.getPrice() >= priceStart && p.getPrice() < priceEnd;
+        }).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Product> sortProducts(List<Product> products, String sortType) {
+        switch(sortType){
+            case "asc":
+                Collections.sort(products, (p1, p2) -> {
+                    if(p1.getDiscountPrice()!=null && p2.getDiscountPrice()!=null){
+                        return p1.getDiscountPrice().compareTo(p2.getDiscountPrice());
+                    }
+                    else if(p1.getDiscountPrice()!=null && p2.getDiscountPrice()==null){
+                        return p1.getDiscountPrice().compareTo(p2.getPrice());
+                    }
+                    else{
+                        return p1.getPrice().compareTo(p2.getPrice());
+                    }
+                });
+                break;
+            case "desc":
+                Collections.sort(products, (p1, p2) -> {
+                    if(p1.getDiscountPrice()!=null && p2.getDiscountPrice()!=null){
+                        return p2.getDiscountPrice().compareTo(p1.getDiscountPrice());
+                    }
+                    else if(p1.getDiscountPrice()!=null && p2.getDiscountPrice()==null){
+                        return p2.getDiscountPrice().compareTo(p1.getPrice());
+                    }
+                    else{
+                        return p2.getPrice().compareTo(p1.getPrice());
+                    }
+                });
+                break;
+            default:
+                Collections.sort(products, (p1, p2) -> p1.getCreatedTime().compareTo(p2.getCreatedTime()));
+                break;
+        }
+        return products;
+    }
+
+    @Override
+    public ProductSearchResultDto getSearchResult(List<Product> productsByCategoryKeyword, List<Product> productByFilter, Integer pageIdx, Integer perPage, String keyword) {
+        // no filter, only category & keyword
+
+            if(productByFilter==null){
+                productByFilter = productsByCategoryKeyword;
+            }
+            Set<Brand>brands = productsByCategoryKeyword.stream().map(Product::getBrand).collect(Collectors.toSet());
+            List<BrandDto>brandDtos = MapperUtils.mapperList(Arrays.asList(brands.toArray()), BrandDto.class);
+
+
+            Set<UserEntity>sellers = productsByCategoryKeyword.stream().map(Product::getSeller).collect(Collectors.toSet());
+            List<SellerDto>sellerDtos = MapperUtils.mapperList(Arrays.asList(sellers.toArray()), SellerDto.class);
+
+            List<ProductSearchDto> productDtos = MapperUtils.mapperList(productByFilter, ProductSearchDto.class);
+            int start = pageIdx * perPage;
+            int end = (start+perPage<productByFilter.size())?perPage*(pageIdx+1):productByFilter.size();
+
+            try{
+            ProductSearchResultDto result = ProductSearchResultDto.builder()
+                    .totalResults(productByFilter.size())
+                    .products(productDtos.subList(start, end))
+                    .sellers(sellerDtos)
+                    .brands(brandDtos)
+                    .keyword(keyword)
+                    .build();
+
+            return result;
+        }
+        catch (Exception ex){
+            ProductSearchResultDto result = ProductSearchResultDto.builder()
+                    .totalResults(0)
+                    .products(null)
+                    .sellers(sellerDtos)
+                    .brands(brandDtos)
+                    .keyword(keyword)
+                    .build();
+            return result;
+        }
+
+    }
+
+
+}
+
+@Component
+class ProductServiceHelper{
+    @Autowired
+    ProductRepository productRepository;
 
     public void saveImages(MultipartFile mainImage, MultipartFile[] extraImages, Product savedProduct) throws IOException {
         if (!mainImage.isEmpty()) {
@@ -80,9 +232,9 @@ public class ProductServiceImpl implements ProductService {
         if(extraImages.length>0){
             String uploadDir = "../product-images/" + savedProduct.getId() + "/extras";
             for(MultipartFile image: extraImages){
-                    if (image.isEmpty()) continue;
-                    String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-                    FileUploadUtils.saveFile(uploadDir, fileName, image);
+                if (image.isEmpty()) continue;
+                String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+                FileUploadUtils.saveFile(uploadDir, fileName, image);
             }
             setExtraImages(extraImages, savedProduct);
         }
