@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { CategoryService } from '../service/category.service';
 import { Category } from '../model/Category';
 import { ProductService } from '../service/product.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ProductHelper } from '../utils/ProductHelper';
+import { QueryParams } from '../model/QueryParams';
 
 @Component({
   selector: 'app-header',
@@ -10,32 +12,38 @@ import { Router } from '@angular/router';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-  selectedCategory = '';
-  selectedKeyword = '';
   rootCategories: Category[];
+  queryParams: QueryParams;
+  categoryPlaceHolder: string;
 
   constructor(
     private categoryService: CategoryService,
-    private router: Router
+    private router: Router,
+    private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit(): void {
+    const categoryId = this.activatedRoute.snapshot.queryParams["categoryId"];
+    this.queryParams = new QueryParams();
     this.categoryService.getRootCategoriesForSearch().subscribe(c => {
       this.rootCategories = c;
+      if (categoryId !== undefined) { this.categoryPlaceHolder = c.filter(c => c.id === parseInt(categoryId))[0].name; }
+      else{
+        this.categoryPlaceHolder = 'All Categories';
+      }
     });
   }
 
   search(): void{
-    if(this.selectedKeyword != ''){
       this.router.navigate([`products`], {queryParams:
           {
-            categoryId: this.selectedCategory,
-            keyword: this.selectedKeyword,
-            pageIdx: 0,
-            perPage: 10
+            categoryId: this.queryParams.categoryId,
+            keyword: this.queryParams.keyword,
+            pageIdx: this.queryParams.pageIdx,
+            perPage: this.queryParams.perPage
           }
       });
-    }
+
   }
 
 }

@@ -18,6 +18,7 @@ import { SellerNewproductComponent } from './seller/seller-newproduct/seller-new
 import { SellerHeaderComponent } from './seller/seller-header/seller-header.component';
 import { ProductsComponent } from './product/products/products.component';
 import { SearchResultComponent } from './product/search-result/search-result.component';
+import { BrowsinghistoryComponent } from './product/browsinghistory/browsinghistory.component';
 
 
 
@@ -35,7 +36,8 @@ import { SearchResultComponent } from './product/search-result/search-result.com
     SellerNewproductComponent,
     SellerHeaderComponent,
     ProductsComponent,
-    SearchResultComponent
+    SearchResultComponent,
+    BrowsinghistoryComponent
   ],
   imports: [
     BrowserModule,

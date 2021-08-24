@@ -13,12 +13,12 @@
   <div class="header__search">
     <div class="header__searchIcon header__search_categories">
       <mat-form-field appearance="none">
-        <mat-select [(ngModel)]="selectedCategory" placeholder="All Categories">
+        <mat-select [(ngModel)]="queryParams.categoryId" placeholder={{categoryPlaceHolder}}>
           <mat-option value="{{category.id}}" *ngFor="let category of rootCategories">{{category.name}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>
-    <input class="header__searchInput" type="text" [(ngModel)]="selectedKeyword"/>
+    <input class="header__searchInput" type="text" [(ngModel)]="queryParams.keyword"/>
     <div class="header__searchIcon" (click)="search()">
       <mat-icon>search</mat-icon>
     </div>

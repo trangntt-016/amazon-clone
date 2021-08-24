@@ -2,11 +2,11 @@
 <div class="products-search">
   <div class="show-result">
     <div>
-      <p *ngIf="products.length > 0">{{currentPage*40 + 1}}-{{currentPage * 40 + searchResult.products.length}} results of over {{searchResult.totalResults | number}} for <span>"{{searchResult.keyword}}"</span></p>
-      <p *ngIf="products.length == 0">No products is found for <span>"{{selectedKeyword}}"</span></p>
+      <p *ngIf="products.length > 0">{{queryParams.pageIdx*40 + 1}}-{{queryParams.pageIdx * 40 + searchResult.products.length}} results of over {{searchResult.totalResults | number}} for <span>"{{searchResult.keyword}}"</span></p>
+      <p *ngIf="products.length == 0">No products is found for <span>"{{queryParams.keyword}}"</span></p>
     </div>
     <div>
-      <mat-select placeholder="Sort by: Features">
+      <mat-select placeholder="Sort by: Features" (selectionChange)="sortByFeature($event)">
         <mat-option value="{{feature.alias}}" *ngFor="let feature of featureCriteria">{{feature.name}}</mat-option>
       </mat-select>
     </div>
@@ -62,23 +62,31 @@
       <div class="criterion-wrapper">
         <p class="bold">Brand</p>
         <div class="brandCheckbox-wrapper">
-          <mat-checkbox [(ngModel)]="brand.isChecked" *ngFor="let brand of searchResult.brands" (change)="filterByBrand(brand)">{{brand.name }}</mat-checkbox>
+          <div class="brandCheckbox-container" *ngIf="!isViewMore">
+            <mat-checkbox [(ngModel)]="brand.isChecked" *ngFor="let brand of shortBrands" (change)="filterByBrand(brand)">{{brand.name }}</mat-checkbox>
+            <p (click)="viewMore()">View more</p>
+          </div>
+          <div class="brandCheckbox-container" *ngIf="isViewMore">
+            <mat-checkbox [(ngModel)]="brand.isChecked" *ngFor="let brand of searchResult.brands" (change)="filterByBrand(brand)">{{brand.name }}</mat-checkbox>
+            <p (click)="viewMore()">View less</p>
+          </div>
+
         </div>
       </div>
 
       <!-- criterion 3 -->
       <div class="criterion-wrapper">
         <p class="bold">Price</p>
-        <p *ngFor="let criterion of priceCriteria; let i = index" (click)="filterByPrice(i)">{{criterion.name}}</p>
+        <p *ngFor="let criterion of priceCriteria; let i = index" (click)="filterByPrice(criterion)">{{criterion.name}}</p>
       </div>
 
       <!--criterion 3 -->
-      <div class="criterion-wrapper">
-        <p class="bold">Seller</p>
-        <div class="brandCheckbox-wrapper">
-          <mat-checkbox [(ngModel)]="seller.isChecked" *ngFor="let seller of searchResult.sellers" (change)="filterBySeller()">{{seller.name }}</mat-checkbox>
-        </div>
-      </div>
+<!--      <div class="criterion-wrapper">-->
+<!--        <p class="bold">Seller</p>-->
+<!--        <div class="brandCheckbox-wrapper">-->
+<!--          <mat-checkbox [(ngModel)]="seller.isChecked" *ngFor="let seller of searchResult.sellers" (change)="filterBySeller()">{{seller.name }}</mat-checkbox>-->
+<!--        </div>-->
+<!--      </div>-->
 
     </div>
     <div class="products__search_result">
@@ -88,7 +96,7 @@
               <mat-icon>arrow_back</mat-icon>
               Previous
             </button>
-            <button mat-raised-button style="margin-left:15px; margin-right:15px">{{currentPage + 1}}</button>
+            <button mat-raised-button style="margin-left:15px; margin-right:15px">{{queryParams.pageIdx+1}}</button>
             <button mat-button mat-raised-button (click)="nextPage()" [disabled]="hasNext===false">
               <mat-icon>arrow_forward</mat-icon>
               Next
@@ -96,5 +104,8 @@
       </div>
     </div>
   </div>
-
+</div>
+<hr>
+<div class="browsing_history">
+  <app-browsinghistory></app-browsinghistory>
 </div>

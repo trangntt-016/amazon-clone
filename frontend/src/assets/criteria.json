@@ -1,0 +1,43 @@
+{
+  "feature" : [
+    {
+      "name": "Price: Low to High",
+      "alias": "asc"
+    },
+    {
+      "name": "Price: High to Low",
+      "alias": "desc"
+    },
+    {
+      "name": "Newest Arrivals",
+      "alias": "newest"
+    }
+  ],
+  "priceCriteria": [
+    {
+      "name": "Under $25",
+      "greaterThan": 0,
+      "lessThan": 25
+    },
+    {
+      "name": "$25 to $50",
+      "greaterThan": 25,
+      "lessThan": 50
+    },
+    {
+      "name": "$50 to $100",
+      "greaterThan": 25,
+      "lessThan": 50
+    },
+    {
+      "name": "$100 & Above",
+      "greaterThan": 100,
+      "lessThan": 10000
+    },
+    {
+      "name": "Clear",
+      "greaterThan": null,
+      "lessThan": null
+    }
+  ]
+}

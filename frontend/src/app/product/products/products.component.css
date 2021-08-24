@@ -41,6 +41,7 @@
   padding: 20px;
   border-right: 1px solid gray;
   overflow: scroll;
+  height: 100%;
 }
 .criterias-wrapper .bold{
   font-weight: 700;
@@ -72,7 +73,7 @@
   color:#FF9900
 }
 
-.brandCheckbox-wrapper{
+.brandCheckbox-container{
   display: flex;
   flex-direction: column;
 }
@@ -98,13 +99,20 @@
   flex-direction: row;
   justify-content: center;
 }
-.pagination_wrapper{
 
-}
 .mat-raised-button{
   border: 1px solid lightgray;
   background: rgb(234, 237, 237);
 }
-.disabled{
 
+::-webkit-scrollbar {
+  width: 0px;
+  height: 2px;
+  background: transparent; /* make scrollbar transparent */
+}
+
+
+/* browsing history*/
+.browsing_history{
+  width: 100%;
 }
