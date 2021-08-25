@@ -11,6 +11,8 @@ import org.hibernate.annotations.Parameter;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -62,4 +64,6 @@ public class UserEntity {
     private Role role;
 
 
+    @ElementCollection
+    private Set<BrowsingCategoryHistory> browsing_histories = new HashSet<>();
 }

@@ -1,5 +1,6 @@
 package com.canada.aws.service;
 
+import com.canada.aws.dto.ProductDetailsDto;
 import com.canada.aws.dto.ProductDto;
 import com.canada.aws.dto.ProductSearchDto;
 import com.canada.aws.dto.ProductSearchResultDto;
@@ -25,4 +26,5 @@ public interface ProductService {
 
     ProductSearchResultDto getSearchResult(List<Product> productsByCategoryKeyword,List<Product> productByFilter, Integer pageIdx, Integer perPage, String keyword);
 
+    ProductDetailsDto getProductByProductId(Integer productId);
 }

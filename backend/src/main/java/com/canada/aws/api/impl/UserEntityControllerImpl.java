@@ -76,4 +76,5 @@ public class UserEntityControllerImpl implements UserEntityController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.UNAUTHORIZED);
         }
     }
+
 }

@@ -13,7 +13,7 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BrowsingHistory {
+public class BrowsingCategoryHistory {
     private Integer category_id;
     private Date search_on;
 }

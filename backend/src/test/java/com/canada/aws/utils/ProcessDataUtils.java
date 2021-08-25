@@ -101,7 +101,7 @@ public class ProcessDataUtils {
     @Test
     public void modifyData(){
 
-            List<Product> all = productRepository.findAllByCategoryId(12);
+            List<Product> all = productRepository.findAllByCategoryId(1099);
             for(Product p: all){
                 if(p.getPrice()>100 || p.getDiscountPrice()>100){
                     Float newprice = p.getPrice()/10;

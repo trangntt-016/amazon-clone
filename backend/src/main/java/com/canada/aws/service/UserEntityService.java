@@ -16,4 +16,6 @@ public interface UserEntityService {
     LogInResDto OTPLogin(String userId);
 
     LogInResDto login(LoginReqDto loginDto);
+
+    void updateBrowsingHistory(String userId, Integer categoryId);
 }

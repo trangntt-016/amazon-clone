@@ -66,4 +66,13 @@ public class Product extends IdBasedEntity {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<ProductImage> extraImages = new HashSet<>();
 
+    @Override
+    public String toString(){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("product id:").append(this.id)
+                .append(",name:").append(this.name);
+
+        return sb.toString();
+    }
 }

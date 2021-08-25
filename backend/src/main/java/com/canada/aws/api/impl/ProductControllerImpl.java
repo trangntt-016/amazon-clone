@@ -6,6 +6,7 @@ import com.canada.aws.dto.ProductSearchDto;
 import com.canada.aws.dto.ProductSearchResultDto;
 import com.canada.aws.model.Product;
 import com.canada.aws.service.impl.ProductServiceImpl;
+import com.canada.aws.service.impl.UserEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,9 @@ public class ProductControllerImpl implements ProductController {
     @Autowired
     ProductServiceImpl productService;
 
+    @Autowired
+    UserEntityServiceImpl userService;
+
     @Override
     @PostMapping()
     public ResponseEntity<?> createANewProduct(ProductDto productDto){
@@ -39,6 +43,7 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     public ResponseEntity<?> getAllProductsByCategoryIdAndKeyWord(
+            String userId,
             Integer categoryId,
             String keyword,
             Integer pageIdx,
@@ -56,6 +61,9 @@ public class ProductControllerImpl implements ProductController {
         //find with category id and keyword
         else{
             productsByCategoryKeyword = productService.getAllProductsByCategoryIdAndKeyword(categoryId, keyword);
+            if (productsByCategoryKeyword.size() > 0){
+                userService.updateBrowsingHistory(userId, categoryId);
+            }
         }
 
         if(brandIdStr!=null){
@@ -73,6 +81,11 @@ public class ProductControllerImpl implements ProductController {
         ProductSearchResultDto resultDto = productService.getSearchResult(productsByCategoryKeyword,productsByFilter, pageIdx, perPage, keyword);
 
         return ResponseEntity.ok(resultDto);
+    }
+
+    @Override
+    public ResponseEntity<?> getProductByProductId(Integer productId) {
+        return ResponseEntity.ok(productService.getProductByProductId(productId));
     }
 
 }

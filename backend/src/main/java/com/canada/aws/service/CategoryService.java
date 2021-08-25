@@ -13,4 +13,6 @@ public interface CategoryService {
     List<Category>getRootCategoriesForSearch();
 
     List<Brand>getAllBrandsByCategoryId(Integer categoryId);
+
+    List<Category>getTreeCategoriesByCategoryId(Integer categoryId);
 }

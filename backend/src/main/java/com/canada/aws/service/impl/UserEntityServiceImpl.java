@@ -8,6 +8,7 @@ import com.canada.aws.dto.LogInResDto;
 import com.canada.aws.dto.LoginReqDto;
 import com.canada.aws.dto.RegisterOTPResDto;
 import com.canada.aws.dto.RegisterReqDto;
+import com.canada.aws.model.BrowsingCategoryHistory;
 import com.canada.aws.model.Role;
 import com.canada.aws.model.UserEntity;
 import com.canada.aws.repo.RoleRepository;
@@ -26,6 +27,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class UserEntityServiceImpl implements UserEntityService {
@@ -130,6 +132,28 @@ public class UserEntityServiceImpl implements UserEntityService {
         LogInResDto userLoginDto = LogInResDto.builder().jwt(jwt).name(name).isRememberMe(loginDto.getIsRememberMe()).build();
 
         return userLoginDto;
+    }
+
+    @Override
+    public void updateBrowsingHistory(String userId, Integer categoryId) {
+        if(userId!=null){
+            Optional<UserEntity> user = userEntityRepository.findById(userId);
+
+            if(user.isPresent()){
+                Set<BrowsingCategoryHistory> browsingCategoryHistorySet = user.get().getBrowsing_histories();
+
+                BrowsingCategoryHistory history = BrowsingCategoryHistory.builder()
+                        .search_on(new Date())
+                        .category_id(categoryId)
+                        .build();
+
+                browsingCategoryHistorySet.add(history);
+
+                user.get().setBrowsing_histories(browsingCategoryHistorySet);
+
+                userEntityRepository.save(user.get());
+            }
+        }
     }
 
     public boolean isEmailUnique(String email){

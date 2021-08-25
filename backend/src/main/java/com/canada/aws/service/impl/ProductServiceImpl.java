@@ -4,14 +4,12 @@ import com.canada.aws.dto.*;
 import com.canada.aws.model.*;
 import com.canada.aws.repo.BrandRepository;
 import com.canada.aws.repo.CategoryRepository;
+import com.canada.aws.repo.ProductImageRepository;
 import com.canada.aws.repo.ProductRepository;
 import com.canada.aws.service.ProductService;
 import com.canada.aws.utils.FileUploadUtils;
 import com.canada.aws.utils.MapperUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -33,7 +31,17 @@ public class ProductServiceImpl implements ProductService {
     CategoryRepository categoryRepository;
 
     @Autowired
+    ProductImageRepository productImageRepository;
+
+    @Autowired
+    CategoryServiceImpl categoryService;
+
+    @Autowired
     ProductServiceHelper productServiceHelper;
+
+
+
+
 
     public Product createAProduct(ProductDto productDto) throws IOException {
         String alias = productDto.getName()
@@ -206,6 +214,32 @@ public class ProductServiceImpl implements ProductService {
             return result;
         }
 
+    }
+
+    @Override
+    public ProductDetailsDto getProductByProductId(Integer productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        if(product.isPresent()){
+            List<String> images = new ArrayList<>(List.of(product.get().getMainImage()));
+            images.addAll(product.get().getExtraImages().stream().map(ProductImage::getName).collect(Collectors.toList()));
+
+           ProductDetailsDto productDto = MapperUtils.mapperObject(product.get(), ProductDetailsDto.class);
+
+
+           List<Category>categories = categoryService.getTreeCategoriesByCategoryId(product.get().getCategory().getId());
+
+           if(categories==null) {
+               categories = new ArrayList<>(List.of(product.get().getCategory()));
+           }
+
+           List<CategoryDto>categoryDtos = MapperUtils.mapperList(categories, CategoryDto.class);
+
+           productDto.setTreeCategories(categoryDtos);
+           productDto.setImages(images);
+
+           return productDto;
+        }
+        return null;
     }
 
 

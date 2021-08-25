@@ -32,4 +32,7 @@ public interface CategoryRepository extends JpaRepository<Category, Integer> {
     List<Integer> findAllBrandIdsByCategoryId(Integer category_id);
 
 
+
+
+
 }
