@@ -1,2 +1,18 @@
-package com.canada.aws.dto;public class ProductsBrowsingResultDto {
+package com.canada.aws.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class ProductsBrowsingResultDto {
+    List<String>browsingProductsImages;
+
+    List<ProductSearchDto> inspiredProducts;
 }

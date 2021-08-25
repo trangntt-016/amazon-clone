@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface CustomProductRepository {
     List<Product> findAllByCategoryIdsKeyword(List<Integer> ids, String keyword);
+
+    List<Product> findAllInspiredProductsByProductList(List<Product>browsingProducts);
 }

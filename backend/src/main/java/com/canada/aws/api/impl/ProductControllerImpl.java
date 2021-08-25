@@ -1,6 +1,7 @@
 package com.canada.aws.api.impl;
 
 import com.canada.aws.api.ProductController;
+import com.canada.aws.dto.ProductDetailsDto;
 import com.canada.aws.dto.ProductDto;
 import com.canada.aws.dto.ProductSearchDto;
 import com.canada.aws.dto.ProductSearchResultDto;
@@ -43,7 +44,6 @@ public class ProductControllerImpl implements ProductController {
 
     @Override
     public ResponseEntity<?> getAllProductsByCategoryIdAndKeyWord(
-            String userId,
             Integer categoryId,
             String keyword,
             Integer pageIdx,
@@ -61,9 +61,7 @@ public class ProductControllerImpl implements ProductController {
         //find with category id and keyword
         else{
             productsByCategoryKeyword = productService.getAllProductsByCategoryIdAndKeyword(categoryId, keyword);
-            if (productsByCategoryKeyword.size() > 0){
-                userService.updateBrowsingHistory(userId, categoryId);
-            }
+
         }
 
         if(brandIdStr!=null){
@@ -84,8 +82,17 @@ public class ProductControllerImpl implements ProductController {
     }
 
     @Override
-    public ResponseEntity<?> getProductByProductId(Integer productId) {
+    public ResponseEntity<?> getProductByProductId(Integer productId, String userId) {
+        ProductDetailsDto dto = productService.getProductByProductId(productId);
+        if(dto != null){
+            userService.updateBrowsingHistory(userId, dto.getId());
+        }
         return ResponseEntity.ok(productService.getProductByProductId(productId));
+    }
+
+    @Override
+    public ResponseEntity<?> getBrowsingHistoryProducts(String userId, Integer categoryId) {
+        return ResponseEntity.ok(productService.getBrowsingHistoryProducts(userId, categoryId));
     }
 
 }

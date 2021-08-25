@@ -1,6 +1,6 @@
 package com.canada.aws.repo;
 
-import com.canada.aws.model.BrowsingCategoryHistory;
+import com.canada.aws.model.BrowsingProductDetailHistory;
 import com.canada.aws.model.Category;
 import com.canada.aws.model.UserEntity;
 import com.canada.aws.utils.EntityUtils;
@@ -28,10 +28,10 @@ public class UserEntityRepositoryTests {
 
         UserEntity randomUser = userRepository.findById("C_002").get();
 
-        Set<BrowsingCategoryHistory> historySet = randomUser.getBrowsing_histories();
-        BrowsingCategoryHistory history = BrowsingCategoryHistory.builder()
-                .category_id(category.getId())
-                .search_on(new Date())
+        Set<BrowsingProductDetailHistory> historySet = randomUser.getBrowsing_histories();
+        BrowsingProductDetailHistory history = BrowsingProductDetailHistory.builder()
+                .productId(category.getId())
+                .browseOn(new Date())
                 .build();
 
         historySet.add(history);

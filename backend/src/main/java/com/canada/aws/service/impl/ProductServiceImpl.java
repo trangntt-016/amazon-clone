@@ -2,13 +2,12 @@ package com.canada.aws.service.impl;
 
 import com.canada.aws.dto.*;
 import com.canada.aws.model.*;
-import com.canada.aws.repo.BrandRepository;
-import com.canada.aws.repo.CategoryRepository;
-import com.canada.aws.repo.ProductImageRepository;
-import com.canada.aws.repo.ProductRepository;
+import com.canada.aws.repo.*;
 import com.canada.aws.service.ProductService;
+import com.canada.aws.utils.ConvertDataUtils;
 import com.canada.aws.utils.FileUploadUtils;
 import com.canada.aws.utils.MapperUtils;
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -18,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -26,6 +26,9 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     BrandRepository brandRepository;
+
+    @Autowired
+    UserEntityRepository userRepository;
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -38,9 +41,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Autowired
     ProductServiceHelper productServiceHelper;
-
-
-
 
 
     public Product createAProduct(ProductDto productDto) throws IOException {
@@ -242,6 +242,42 @@ public class ProductServiceImpl implements ProductService {
         return null;
     }
 
+    @Override
+    public ProductsBrowsingResultDto getBrowsingHistoryProducts(String userId, Integer categoryId) {
+        Optional<UserEntity>user = userRepository.findById(userId);
+
+        List<String> browsingProductImages = new ArrayList<>();
+        List<ProductSearchDto>inspiredsDto = new ArrayList<>();
+
+        if(user.isPresent() && user.get().getBrowsing_histories().size() > 0){
+            List<Integer>product_ids = user.get().getBrowsing_histories().stream().map(BrowsingProductDetailHistory::getProductId).collect(Collectors.toList());
+
+            browsingProductImages = this.productServiceHelper.getBrowsingImagesByProductIds(product_ids);
+
+            List<Product>inspiredProducts = this.productServiceHelper.getInspiredProducts(product_ids);
+
+            inspiredsDto = MapperUtils.mapperList(inspiredProducts, ProductSearchDto.class);
+
+            ProductsBrowsingResultDto result = ProductsBrowsingResultDto.builder()
+                    .browsingProductsImages(browsingProductImages)
+                    .inspiredProducts(inspiredsDto)
+                    .build();
+
+            return result;
+        }
+        if(user.isEmpty() || browsingProductImages.size()==0 && categoryId!=null){
+            List<Product>  inspiredProducts = this.productRepository.findAllByCategoryId(categoryId);
+            inspiredsDto = MapperUtils.mapperList(inspiredProducts, ProductSearchDto.class);
+            ProductsBrowsingResultDto result = ProductsBrowsingResultDto.builder()
+                    .browsingProductsImages(browsingProductImages)
+                    .inspiredProducts(inspiredsDto)
+                    .build();
+
+            return result;
+        }
+        return null;
+    }
+
 
 }
 
@@ -249,6 +285,9 @@ public class ProductServiceImpl implements ProductService {
 class ProductServiceHelper{
     @Autowired
     ProductRepository productRepository;
+
+    @Autowired
+    ConvertDataUtils utils;
 
     public void saveImages(MultipartFile mainImage, MultipartFile[] extraImages, Product savedProduct) throws IOException {
         if (!mainImage.isEmpty()) {
@@ -302,5 +341,28 @@ class ProductServiceHelper{
             }
         }
     }
+
+    public List<String> getBrowsingImagesByProductIds(List<Integer> product_ids){
+        Iterable<Product> productIterable = productRepository.findAllById(product_ids);
+
+
+        List<Product>tempProducts = this.utils.convertIterableToList(productIterable);
+
+        return tempProducts.stream().map(Product::getMainImage).collect(Collectors.toList());
+    }
+
+    public List<Product> getInspiredProducts(List<Integer>product_ids){
+        Iterable<Product> productIterable = productRepository.findAllById(product_ids);
+
+        List<Product>browsingProducts = this.utils.convertIterableToList(productIterable);
+
+        List<Product>products = productRepository.findAllInspiredProductsByProductList(browsingProducts);
+
+        return products;
+
+    }
+
+
+
 
 }

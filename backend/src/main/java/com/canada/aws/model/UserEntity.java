@@ -65,5 +65,5 @@ public class UserEntity {
 
 
     @ElementCollection
-    private Set<BrowsingCategoryHistory> browsing_histories = new HashSet<>();
+    private Set<BrowsingProductDetailHistory> browsing_histories = new HashSet<>();
 }

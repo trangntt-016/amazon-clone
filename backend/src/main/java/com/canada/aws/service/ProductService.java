@@ -1,9 +1,6 @@
 package com.canada.aws.service;
 
-import com.canada.aws.dto.ProductDetailsDto;
-import com.canada.aws.dto.ProductDto;
-import com.canada.aws.dto.ProductSearchDto;
-import com.canada.aws.dto.ProductSearchResultDto;
+import com.canada.aws.dto.*;
 import com.canada.aws.model.Product;
 import com.canada.aws.service.impl.ProductServiceImpl;
 import org.springframework.stereotype.Service;
@@ -27,4 +24,6 @@ public interface ProductService {
     ProductSearchResultDto getSearchResult(List<Product> productsByCategoryKeyword,List<Product> productByFilter, Integer pageIdx, Integer perPage, String keyword);
 
     ProductDetailsDto getProductByProductId(Integer productId);
+
+    ProductsBrowsingResultDto getBrowsingHistoryProducts(String userId, Integer categoryId);
 }

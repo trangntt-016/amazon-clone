@@ -13,7 +13,6 @@ public interface ProductController{
 
     @GetMapping()
     ResponseEntity<?> getAllProductsByCategoryIdAndKeyWord(
-            @RequestParam(required = false) String userId,
             @RequestParam(required = false) Integer categoryId,
             @RequestParam String keyword,
             @RequestParam Integer pageIdx,
@@ -24,5 +23,13 @@ public interface ProductController{
             @RequestParam(required = false) String sortType);
 
     @GetMapping("/{productId}")
-    ResponseEntity<?> getProductByProductId(@PathVariable("productId") Integer productId);
+    ResponseEntity<?> getProductByProductId(
+            @PathVariable("productId") Integer productId,
+            @RequestParam(required = false) String userId);
+
+    @GetMapping("/history")
+    ResponseEntity<?> getBrowsingHistoryProducts(
+            @RequestParam(required = false) String userId,
+            @RequestParam(required = false) Integer categoryId
+    );
 }

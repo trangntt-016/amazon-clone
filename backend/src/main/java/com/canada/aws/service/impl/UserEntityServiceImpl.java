@@ -8,7 +8,7 @@ import com.canada.aws.dto.LogInResDto;
 import com.canada.aws.dto.LoginReqDto;
 import com.canada.aws.dto.RegisterOTPResDto;
 import com.canada.aws.dto.RegisterReqDto;
-import com.canada.aws.model.BrowsingCategoryHistory;
+import com.canada.aws.model.BrowsingProductDetailHistory;
 import com.canada.aws.model.Role;
 import com.canada.aws.model.UserEntity;
 import com.canada.aws.repo.RoleRepository;
@@ -135,21 +135,21 @@ public class UserEntityServiceImpl implements UserEntityService {
     }
 
     @Override
-    public void updateBrowsingHistory(String userId, Integer categoryId) {
+    public void updateBrowsingHistory(String userId, Integer productId) {
         if(userId!=null){
             Optional<UserEntity> user = userEntityRepository.findById(userId);
 
             if(user.isPresent()){
-                Set<BrowsingCategoryHistory> browsingCategoryHistorySet = user.get().getBrowsing_histories();
+                Set<BrowsingProductDetailHistory> browsingProductDetailHistorySet = user.get().getBrowsing_histories();
 
-                BrowsingCategoryHistory history = BrowsingCategoryHistory.builder()
-                        .search_on(new Date())
-                        .category_id(categoryId)
+                BrowsingProductDetailHistory history = BrowsingProductDetailHistory.builder()
+                        .browseOn(new Date())
+                        .productId(productId)
                         .build();
 
-                browsingCategoryHistorySet.add(history);
+                browsingProductDetailHistorySet.add(history);
 
-                user.get().setBrowsing_histories(browsingCategoryHistorySet);
+                user.get().setBrowsing_histories(browsingProductDetailHistorySet);
 
                 userEntityRepository.save(user.get());
             }
