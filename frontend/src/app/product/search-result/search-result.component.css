@@ -7,7 +7,10 @@
   grid-auto-rows: 450px;
   background-color: white;
 }
-
+a{
+  text-decoration: none;
+  cursor: pointer;
+}
 .product__container:hover{
   cursor: pointer;
 }
@@ -39,6 +42,7 @@ img{
   font-size: 16px;
 }
 .price{
+  color: #565959;
   font-size: 21px;
   line-height: 24px;
 }

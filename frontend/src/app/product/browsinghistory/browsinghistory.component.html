@@ -4,11 +4,11 @@
       Inspired by your browsing history
     </p>
     <div class="products_grid">
-      <div class="product_browsing_container">
+      <a [routerLink]="['/product',p.id]" class="product_browsing_container" *ngFor="let p of browsingProductHistoryResult.inspiredProducts">
         <div class="image_container">
-          <img src="http://img6a.flixcart.com/image/sensor-security-system/f/f/y/pir-wireless-motion-sensor-four-switch-control-buildtrack-original-imaehdg6h6zajg7w.jpeg">
+          <img src={{p.mainImage}} (error)="p.mainImage = 'https://www.elegantthemes.com/blog/wp-content/uploads/2019/10/2-2.png'">
         </div>
-        <p class="title_product">Blink Mini – Compact indoor plug-in smart security camera, 1080 HD video, night vision, motion detection, two-way audio</p>
+        <p class="title_product">{{p.name}}</p>
         <div class="stars">
           <mat-icon class="staricon">star</mat-icon>
           <mat-icon class="staricon">star</mat-icon>
@@ -17,10 +17,25 @@
           <mat-icon class="staricon">star_border</mat-icon>
           <p class="price_stars">54</p>
         </div>
-        <p>$139.55</p>
+        <p>{{p.price | currency}}</p>
 
+      </a>
+    </div>
+  </div>
+  <hr>
+  <div class="browsing_history" *ngIf="browsingProductHistoryResult.browsingProductsImages.length>0">
+    <p class="title">
+      Your browsing history
+    </p>
+    <div class="products_grid your_browsing">
+      <div class="product_browsing_container" *ngFor="let i of browsingProductHistoryResult.browsingProductsImages">
+        <div class="image_container">
+          <img src={{i}}>
+        </div>
       </div>
     </div>
   </div>
+
+
 
 </div>

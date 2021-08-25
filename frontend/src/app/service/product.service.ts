@@ -36,7 +36,6 @@ export class ProductService {
     priceStart: number,
     priceEnd: number,
     sortType: string): Observable<any>{
-    const userId = this.authService.readToken().userId;
 
     let queryParams = '';
     if (categoryId !== 0 && ! isNaN(categoryId)){
@@ -63,17 +62,21 @@ export class ProductService {
     if (sortType !== null && sortType !== undefined){
       queryParams += '&sortType=' + sortType;
     }
-    if (userId !== null){
-      queryParams += '&userId=' + userId;
-    }
-    else if(userId == null){
-      localStorage.setItem("history_categoryId", categoryId.toString());
-    }
     return this.http.get<any>(`${environment.productAPI}?${queryParams}`);
   }
 
   getProductByProductId(id: number): Observable<any>{
-    return this.http.get<any>(`${environment.productAPI}/${id}`);
+    const userId = (this.authService.readToken()) ? this.authService.readToken().userId : '';
+
+    const urlStr = `${environment.productAPI}/${id}?userId=${userId}`;
+
+    return this.http.get<any>(urlStr);
+  }
+
+  getBrowsingHistoryProducts(categoryId): Observable<any>{
+    const userId = (this.authService.readToken()) ? this.authService.readToken().userId : '';
+
+    return this.http.get<any>(`${environment.productAPI}/history?userId=${userId}&categoryId=${categoryId}`);
   }
 
 }

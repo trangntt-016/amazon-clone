@@ -1,5 +1,5 @@
 <div class="products__result">
-  <div *ngFor="let p of products" class="product__container">
+  <a *ngFor="let p of products" class="product__container" [routerLink]="['/product',p.id]">
     <div class="image_container">
       <img [src]="p.mainImage" (error)="p.mainImage = 'https://www.elegantthemes.com/blog/wp-content/uploads/2019/10/2-2.png'">
     </div>
@@ -10,9 +10,9 @@
       </p>
       <p class="price" *ngIf="p.discountPrice">
         <span>${{p.discountPrice |  number }}</span>
-        <span *ngIf="p.discountPrice" class="discount">${{p.price |  number}}</span>
+        <span class="discount">${{p.price |  number}}</span>
       </p>
     </div>
 
-  </div>
+  </a>
 </div>
