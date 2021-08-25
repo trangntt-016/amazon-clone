@@ -1,0 +1,60 @@
+<app-header></app-header>
+<div class="product_details">
+  <div class="tree_product_wrapper">
+    <a [routerLink]="['products?categoryId='+tree.id+'&pageIdx=0&perPage=40']" *ngFor="let tree of product.treeCategories">
+      <span *ngIf="product.treeCategories !== null">{{tree.name}}</span>
+    </a>
+  </div>
+  <div class="product_image_payment_wrapper">
+    <div class="show_image_product">
+      <div class="small_images_wrapper">
+        <div class="small_image_container" *ngFor = "let i of product.images" (click)="updateLargeImage(i)">
+          <img src={{i}}>
+        </div>
+      </div>
+      <div class="large_image_container">
+        <img src={{product.largeImage}}>
+      </div>
+    </div>
+    <div class="product_info">
+      <p class="title">{{product.name}}</p>
+      <div class="stars">
+        <mat-icon class="staricon">star</mat-icon>
+        <mat-icon class="staricon">star</mat-icon>
+        <mat-icon class="staricon">star</mat-icon>
+        <mat-icon class="staricon">star_border</mat-icon>
+        <mat-icon class="staricon">star_border</mat-icon>
+        <p class="rating_stars">6003 ratings</p>
+      </div>
+      <hr>
+      <div class="price_wrapper">
+        <span>Price</span>
+        <p class="price">{{product.price | currency}}</p>
+      </div>
+      <h4>About this item</h4>
+      <h5>{{product.fullDescription}}</h5>
+      <div>
+
+      </div>
+    </div>
+
+    <div class="payment_wrapper">
+      <p class="price">$329.99</p>
+      <p style="color: #007185;">FREE delivery: <span style="color:black;font-weight: 600">Monday, Aug 30</span></p>
+      <p>Fastest delivery: <span style="font-weight: 600">Tomorrow</span></p>
+      <h6>Deliver to Trang - Toronto M3M 2S5</h6>
+      <p class="price stock">In Stock</p>
+      <div class="quantity_wrapper">
+        <p>Quantity</p>
+        <mat-select>
+          <mat-option value="1">1</mat-option>
+          <mat-option value="2">2</mat-option>
+          <mat-option value="3">3</mat-option>
+        </mat-select>
+      </div>
+      <button mat-raised-button class="add-cart">Add to cart</button>
+      <button mat-raised-button class="buy-now">Buy now</button>
+    </div>
+
+  </div>
+</div>

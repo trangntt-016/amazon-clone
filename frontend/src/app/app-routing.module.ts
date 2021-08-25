@@ -7,12 +7,14 @@ import { RegisterComponent } from './register/register.component';
 import { SellerStartComponent } from './seller/seller-start/seller-start.component';
 import { SellerNewproductComponent } from './seller/seller-newproduct/seller-newproduct.component';
 import { ProductsComponent } from './product/products/products.component';
+import { ProductDetailsComponent } from './product-details/product-details.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'login', component: LoginComponent},
   {path: 'register', component: RegisterComponent},
   {path: 'products', component: ProductsComponent},
+  {path: 'product/:productId', component: ProductDetailsComponent},
   {path: 'seller/start', component: SellerStartComponent},
   {path: 'seller/new-product', component: SellerNewproductComponent},
   {path: 'test', component: TestComponent}
