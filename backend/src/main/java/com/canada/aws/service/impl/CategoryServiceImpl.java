@@ -51,6 +51,8 @@ public class CategoryServiceImpl implements CategoryService {
                 categories.add(found);
             }
 
+            categories.add(category.get());
+
             return categories;
         }
         return null;
