@@ -33,9 +33,11 @@ export class ProductsComponent implements OnInit {
   ngOnInit(): void {
     this.helper = new ProductHelper();
 
+
     this.activatedRoute.queryParams.subscribe(params => {
       this.queryParams = this.helper.extractQueryParams(params);
       this.queryParams.pageIdx = parseInt(String(this.queryParams.pageIdx));
+      localStorage.setItem('categoryId', this.queryParams.categoryId.toString());
 
       this.productService.getProductsByCategoryIdKeyword(
         this.queryParams.categoryId,

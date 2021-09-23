@@ -1,3 +1,46 @@
+h2{
+  font-weight: 400;
+  font-size: 28px;
+  line-height: 36px;
+}
+
+hr{
+  background-color: lightgray;
+  margin-top: 20px;
+  color:lightgray;
+  height: 1px;
+  border:none;
+  margin-bottom: 20px;
+}
 .view-car-wrapper{
   width: 100%;
+  padding:20px;
+}
+
+.cart_wrapper{
+  display: flex;
+  column-gap: 20px;
+}
+.shopping_cart{
+  width: 80%;
+}
+.mat-raised-button{
+  border-radius: 19px;
+  box-shadow: 0 2px 5px 0 rgb(213 217 217 / 50%);
+  font-size: 14px;
+  line-height: 20px;
+  vertical-align: middle;
+  height: 29px;
+  background: #FFD814;
+  border-color: #FFD814;
+}
+
+.product_list_wrapper{
+  padding: 20px;
+  display: flex;
+  border: 1px solid lightgray;
+}
+
+.mat_select_wrapper{
+  display: flex;
 }

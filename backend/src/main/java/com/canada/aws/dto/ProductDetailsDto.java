@@ -26,7 +26,7 @@ public class ProductDetailsDto {
 
     private String fullDescription;
 
-    private Boolean isInStock;
+    private Integer quantity;
 
     private Float discountPrice;
 

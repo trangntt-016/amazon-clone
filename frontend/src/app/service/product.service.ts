@@ -19,9 +19,6 @@ export class ProductService {
     private authService: AuthService
   ) { }
 
-  pushFileToStorage(files: File[]): Observable<HttpEvent<{}>> {
-    return null;
-  }
 
   createAProduct(product: FormData): Observable<any>{
     return this.http.post<any>(`${environment.productAPI}`, product);

@@ -7,7 +7,8 @@ export const environment = {
   userAPI: 'http://localhost:3000/api/users',
   categoryAPI: 'http://localhost:3000/api/categories',
   brandAPI: 'http://localhost:3000/api/brands',
-  productAPI: 'http://localhost:3000/api/products'
+  productAPI: 'http://localhost:3000/api/products',
+  cartAPI: 'http://localhost:3000/api/carts'
 };
 /*
  * For easier debugging in development mode, you can import the following file

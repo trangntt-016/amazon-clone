@@ -10,7 +10,7 @@ export interface ProductDetailsDto{
 
   fullDescription: string;
 
-  isInStock: boolean;
+  quantity: number;
 
   discountPrice: number;
 

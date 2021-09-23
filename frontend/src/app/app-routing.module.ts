@@ -8,6 +8,8 @@ import { SellerStartComponent } from './seller/seller-start/seller-start.compone
 import { SellerNewproductComponent } from './seller/seller-newproduct/seller-newproduct.component';
 import { ProductsComponent } from './product/products/products.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { AddressComponent } from './address/address.component';
+import { CartComponent } from './buy/cart/cart.component';
 
 const routes: Routes = [
   {path: '', component: HomeComponent},
@@ -17,6 +19,8 @@ const routes: Routes = [
   {path: 'product/:productId', component: ProductDetailsComponent},
   {path: 'seller/start', component: SellerStartComponent},
   {path: 'seller/new-product', component: SellerNewproductComponent},
+  {path: 'buy/addressselect', component: AddressComponent},
+  {path: 'buy/cart/view', component: CartComponent},
   {path: 'test', component: TestComponent}
 ];
 

@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../service/product.service';
 import { ProductDetailsDto } from '../model/ProductDetailsDto';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { CartItemService } from '../service/cart-item.service';
+import { AuthService } from '../service/auth.service';
+import { CartItemDto } from '../model/CartItemDto';
 
 @Component({
   selector: 'app-product-details',
@@ -10,29 +13,44 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class ProductDetailsComponent implements OnInit {
   product: ProductDetailsDto;
-  images = [
-    { path: 'https://images-na.ssl-images-amazon.com/images/G/15/kindle/journeys/MTkyOWU3NTIt/MTkyOWU3NTIt-M2M0Yjg3OGMt-w1500._CB664769611_.jpg' },
-    { path: 'https://images-na.ssl-images-amazon.com/images/G/15/digital/video/Magellan_MLP/BRND_MTH21_GWBleedingHero_1500x600_Final_Final_en-CA_ENG_PVD7256._CB645030199_.jpg' },
-    { path: 'https://images-na.ssl-images-amazon.com/images/G/15/kindle/journeys/MzRmNjQ5NDEt/MzRmNjQ5NDEt-ZWRiMjk3NmEt-w1500._CB664783629_.jpg' },
-    { path: 'https://images-na.ssl-images-amazon.com/images/G/15/kindle/journeys/YzllYTYxOGQt/YzllYTYxOGQt-ODEzZmMyMTEt-w1500._CB663476491_.jpg' },
-    { path: 'https://images-na.ssl-images-amazon.com/images/G/15/kindle/journeys/YTdjY2M2Mzct/YTdjY2M2Mzct-NTY0Mzg1MzMt-w1500._CB663467513_.jpg' }
-  ];
+  cart: CartItemDto;
+  quantity = 1;
+
   constructor(
     private productService: ProductService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private cartService: CartItemService,
+    private authService: AuthService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
-    const id = this.activatedRoute.snapshot.paramMap.get("productId");
+    const id = this.activatedRoute.snapshot.paramMap.get('productId');
+
+    const userId = this.authService.readToken() ? this.authService.readToken().userId : '';
+      this.cart = new CartItemDto(userId, id);
+
     this.productService.getProductByProductId(parseInt(id)).subscribe(p =>{
       this.product = p;
       this.product.largeImage = p.images[0];
-      console.log(p);
+      console.log(this.product);
     });
   }
 
   updateLargeImage(i): void{
     this.product.largeImage = i;
+  }
+
+  addToCart(): void{
+    if (this.cart.userId !== undefined){
+      this.cartService.addProductToCart(this.cart).subscribe((cart) => {
+        console.log(cart);
+      })
+    }
+  }
+
+  viewcart(): void{
+    this.router.navigate(['/buy/cart/view'])
   }
 
 }

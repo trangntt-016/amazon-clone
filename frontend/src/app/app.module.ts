@@ -20,6 +20,9 @@ import { ProductsComponent } from './product/products/products.component';
 import { SearchResultComponent } from './product/search-result/search-result.component';
 import { BrowsinghistoryComponent } from './product/browsinghistory/browsinghistory.component';
 import { ProductDetailsComponent } from './product-details/product-details.component';
+import { AddressComponent } from './address/address.component';
+import { BuyComponent } from './buy/buy/buy.component';
+import { CartComponent } from './buy/cart/cart.component';
 
 
 
@@ -39,7 +42,10 @@ import { ProductDetailsComponent } from './product-details/product-details.compo
     ProductsComponent,
     SearchResultComponent,
     BrowsinghistoryComponent,
-    ProductDetailsComponent
+    ProductDetailsComponent,
+    AddressComponent,
+    BuyComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

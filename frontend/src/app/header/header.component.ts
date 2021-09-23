@@ -14,7 +14,7 @@ import { QueryParams } from '../model/QueryParams';
 export class HeaderComponent implements OnInit {
   rootCategories: Category[];
   queryParams: QueryParams;
-  categoryPlaceHolder: string;
+  categoryPlaceHolder: string = 'All Categories';
 
   constructor(
     private categoryService: CategoryService,

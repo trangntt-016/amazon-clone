@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProductService } from '../../service/product.service';
 import { ProductBrowsingHistoryResult } from '../../model/ProductBrowsingHistoryResult';
 import { ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-browsinghistory',
@@ -10,13 +11,18 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class BrowsinghistoryComponent implements OnInit {
   browsingProductHistoryResult: ProductBrowsingHistoryResult;
+  categoryId: number;
+
   constructor(
     private productService: ProductService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private authService: AuthService
   ) { }
 
   ngOnInit(): void {
-    const categoryId = this.activatedRoute.snapshot.queryParams["categoryId"];
+    let categoryId = this.activatedRoute.snapshot.queryParams.categoryId;
+    categoryId = (categoryId === undefined) ? localStorage.getItem('categoryId') : categoryId;
+    console.log(categoryId);
 
     this.productService.getBrowsingHistoryProducts(categoryId).subscribe(productHistoryResult =>{
       productHistoryResult.inspiredProducts = productHistoryResult.inspiredProducts.splice(0,5);
