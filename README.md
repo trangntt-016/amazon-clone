@@ -12,8 +12,10 @@ An ecommerce website that replicates main features of Amazon
 
 ## Features
 * Display a list of products based on user's search history and perform complex sorting
+<img src="https://github.com/trangntt-016/amazon-clone/blob/master/demo/productlisting.png">
 
 * Register and sign up with one time password (OTP)
+<img src="https://github.com/trangntt-016/amazon-clone/blob/master/demo/OTPPassword.png">
 
 * Build rating and comment system
 
